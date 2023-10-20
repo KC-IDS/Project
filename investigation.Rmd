@@ -23,9 +23,9 @@ library(readxl)
 
 
 ```{r load-data}
-diagnosis <- read_csv("data/mental-health-inpatient-activity-diagnosis-trend.csv")
+diagnosis <- read_csv("data/mental-health-inpatient-activity-diagnosis-trend.csv", show_col_types = FALSE)
 
-deprivation <- read_csv("data/mental-health-inpatient-activity-deprivation.csv")
+deprivation <- read_csv("data/mental-health-inpatient-activity-deprivation.csv", show_col_types = FALSE)
 
 
 
