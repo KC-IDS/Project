@@ -23,17 +23,9 @@ library(readxl)
 
 
 ```{r load-data}
-<<<<<<< HEAD
-diagnosis <- read_csv("mental-health-inpatient-activity-diagnosis-trend.csv")
-
-deprivation <- read_csv("mental-health-inpatient-activity-deprivation.csv")
-=======
 diagnosis <- read_csv("data/mental-health-inpatient-activity-diagnosis-trend.csv")
 
 deprivation <- read_csv("data/mental-health-inpatient-activity-deprivation.csv")
->>>>>>> 04f06c8b36d7ab70ba2aa97731c7003e7907cd4f
-
-
 
 
 ```
