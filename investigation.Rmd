@@ -49,6 +49,26 @@ Dataset == "SMR04" ~ "Mental Health Inpatients/Day Cases",
 .default = Dataset
 )) %>% select(!Dataset)
 
+deprivation_BUT_READABLE <- diagnosis %>% mutate(smr_translated = case_when(
+Dataset == "SMR00" ~ "Outpatients",
+Dataset == "SMR01" ~ "General/Acute Inpatients/Day Cases (including Geriatric Long Stay Inpatients)",
+Dataset == "SMR02" ~ "Maternity Inpatients/Day Cases",
+Dataset == "SMR04" ~ "Mental Health Inpatients/Day Cases",
+.default = Dataset
+)) %>% select(!Dataset)
+
+deprivation_BUT_READABLE <- deprivation_BUT_READABLE %>% mutate(icd_categories = case_when(
+ICD10Codes == "F00 - F09 or Chapter G and second position F00" ~ "Organic, including symptomatic, mental disorders", 
+ICD10Codes == "F10 - F19" ~ "Mental & behavioural disorders due to psychoactive substance use", 
+ICD10Codes == "F20 - F29" ~ "Schizophrenia, schizotypal, & delusional disorders", 
+ICD10Codes == "F30 - F39" ~ "Mood (affective) disorders", 
+ICD10Codes == "F40 - F49" ~ "Neurotic, stress-related, & somatoform disorders", 
+ICD10Codes == "F60 - F69" ~ "Disorders of adult personality & behaviour", 
+ICD10Codes == "F50 - F59, F70 - F99" ~ "Other selected diagnoses principally affecting children & young people", 
+ICD10Codes == "Non-F codes" ~ "Unrecognized diagnosis", 
+.default = ICD10Codes
+)) %>% select(!ICD10Codes)
+
 diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
   select(
     FinancialYear, HBT, DischargeCount, DischargeRates, PatientsCount,
