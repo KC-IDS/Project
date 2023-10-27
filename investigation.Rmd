@@ -48,6 +48,12 @@ Dataset == "SMR02" ~ "Maternity Inpatients/Day Cases",
 Dataset == "SMR04" ~ "Mental Health Inpatients/Day Cases",
 .default = Dataset
 )) %>% select(!Dataset)
+
+diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
+  select(
+    HBT, DischargeCount, DischargeRates, PatientsCount, PatientsRates,
+    HospitalResidentsCount, HospitalResidentsRates, icd_categories,
+    smr_translated)
 ```
 
 
