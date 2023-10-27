@@ -51,9 +51,9 @@ Dataset == "SMR04" ~ "Mental Health Inpatients/Day Cases",
 
 diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
   select(
-    HBT, DischargeCount, DischargeRates, PatientsCount, PatientsRates,
-    HospitalResidentsCount, HospitalResidentsRates, icd_categories,
-    smr_translated)
+    FinancialYear, HBT, DischargeCount, DischargeRates, PatientsCount,
+    PatientsRates,HospitalResidentsCount, HospitalResidentsRates,
+    icd_categories, smr_translated)
 ```
 
 
