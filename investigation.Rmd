@@ -292,5 +292,23 @@ diagnosis_BUT_READABLE %>%
 
 ```{r load-data}
 #deprivation
+ggplot(deprivation_BUT_READABLE, aes(x = as.factor(SIMD), y = PatientsCount)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(title = "Patients Count vs SIMD",
+       x = "SIMD",
+       y = "Patients Count") +
+  theme_minimal() 
+
+ggplot(deprivation_BUT_READABLE, aes(x = SIMD, y = PatientsRates)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  
+  labs(title = "Scatterplot with Linear Regression Line: SIMD vs Patients Rates",
+       x = "SIMD",
+       y = "Patients Rate") +
+  theme_minimal()
+
+
+
+
 
 ```
