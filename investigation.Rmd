@@ -116,8 +116,8 @@ HBR == "S08000032" ~ "Lanarkshire",
 
 deprivation_BUT_READABLE <- deprivation_BUT_READABLE %>% 
   select(
-    FinancialYear, hbr_translated, smr_translated, DischargeCount, DischargeRates, PatientsCount,
-    PatientsRates,HospitalResidentsCount, HospitalResidentsRates, SIMD)
+    FinancialYear, hbr_translated, SIMD, smr_translated, DischargeCount, DischargeRates,
+    PatientsCount, PatientsRates,HospitalResidentsCount, HospitalResidentsRates)
 
 age_and_sex_BUT_READABLE <- age_and_sex %>% mutate(hbr_translated = case_when(
 HBR == "S92000003" ~ "Scotland",
