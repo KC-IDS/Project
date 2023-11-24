@@ -148,11 +148,8 @@ age_and_sex_BUT_READABLE <- age_and_sex_BUT_READABLE %>%
     PatientsRates)
 ```
 
-```{r load-data}
+```{r visualisations 1}
 # Initial Visualizations
-```
-
-```{r load-data}
 # age group
 age_and_sex_BUT_READABLE %>%
   group_by(FinancialYear, AgeGroup) %>%
@@ -181,7 +178,7 @@ age_and_sex_BUT_READABLE %>%
 ```
 
 
-```{r load-data}
+```{r visualisations 2}
 #sex
 age_and_sex_BUT_READABLE %>%
   group_by(FinancialYear, Sex) %>%
@@ -206,7 +203,8 @@ age_and_sex_BUT_READABLE %>%
        y = "Sum of Discharge Count") +
   theme_minimal()
 ```
-```{r load-data}
+
+```{r visualisations 3}
 #icd_categories
 diagnosis_BUT_READABLE %>%
   group_by( FinancialYear) %>%
@@ -234,7 +232,7 @@ diagnosis_BUT_READABLE %>%
   scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
 ```
 
-```{r load-data}
+```{r visualisations 4}
 #icd_categories
 diagnosis_BUT_READABLE %>%
   group_by( icd_categories) %>%
@@ -261,7 +259,8 @@ diagnosis_BUT_READABLE %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
 ```
-```{r load-data}
+
+```{r visualisations 5}
 # hbt_translated
 diagnosis_BUT_READABLE %>%
   group_by( hbt_translated) %>%
@@ -290,7 +289,7 @@ diagnosis_BUT_READABLE %>%
 ```
 
 
-```{r load-data}
+```{r visualisations 6}
 #deprivation
 ggplot(deprivation_BUT_READABLE, aes(x = as.factor(SIMD), y = PatientsCount)) +
   geom_bar(stat = "identity", fill = "blue") +
