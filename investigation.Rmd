@@ -300,7 +300,7 @@ ggplot(deprivation_BUT_READABLE, aes(x = as.factor(SIMD), y = PatientsCount)) +
 
 ggplot(deprivation_BUT_READABLE, aes(x = SIMD, y = PatientsRates)) +
   geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +  
+  geom_smooth(method = "lm", se = FALSE, color = "cyan") +  
   labs(title = "Scatterplot with Linear Regression Line: SIMD vs Patients Rates",
        x = "SIMD",
        y = "Patients Rate") +
