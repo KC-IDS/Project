@@ -27,6 +27,13 @@ library(tidyverse)
 
 
 ```
+How do discharge numbers in Scotland change over time?
+  - try fitting a suitable model to quantify the change in the numbers and predict how they might          behave in the future
+
+3 additional means of analysis:
+- how they compare to patient numbers over time
+- how they are distributed by region
+- How they are affected by the deprivation index
 
 
 ## Research Question

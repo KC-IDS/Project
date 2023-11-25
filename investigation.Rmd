@@ -23,6 +23,8 @@ library(tidymodels)
 
 
 ```{r load-data}
+# Cleaning the data sets
+
 diagnosis <- read_csv("data/mental-health-inpatient-activity-diagnosis-trend.csv", show_col_types = FALSE)
 
 deprivation <- read_csv("data/mental-health-inpatient-activity-deprivation.csv", show_col_types = FALSE)
@@ -51,14 +53,6 @@ Dataset == "SMR04" ~ "Mental Health Inpatients/Day Cases",
 .default = Dataset
 )) %>% select(!Dataset)
 
-deprivation_BUT_READABLE <- deprivation %>% mutate(smr_translated = case_when(
-Dataset == "SMR00" ~ "Outpatients",
-Dataset == "SMR01" ~ "General/Acute Inpatients/Day Cases (including Geriatric Long Stay Inpatients)",
-Dataset == "SMR02" ~ "Maternity Inpatients/Day Cases",
-Dataset == "SMR04" ~ "Mental Health Inpatients/Day Cases",
-.default = Dataset
-)) %>% select(!Dataset)
-
 diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
   select(
     FinancialYear, HBT, DischargeCount, DischargeRates, PatientsCount,
@@ -67,71 +61,255 @@ diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>%
 
 diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% mutate(hbt_translated = case_when(
 HBT == "S92000003" ~ "Scotland",
-HBT == "S08000015" ~ "NHS Ayrshire and Arran",
-HBT == "S08000016" ~ "NHS Borders",
-HBT == "S08000017" ~ "NHS Dumfries and Galloway",
-HBT == "S08000018" ~ "NHS Fife",
-HBT == "S08000019" ~ "NHS Forth Valley",
-HBT == "S08000020" ~ "NHS Grampian",
-HBT == "S08000021" ~ "NHS Greater Glasgow and Clyde",
-HBT == "S08000022" ~ "NHS Highland",
-HBT == "S08000023" ~ "NHS Lanarkshire",
-HBT == "S08000024" ~ "NHS Lothian",
-HBT == "S08000025" ~ "NHS Orkney",
-HBT == "S08000026" ~ "NHS Shetland",
-HBT == "S08000027" ~ "NHS Tayside",
-HBT == "S08000028" ~ "NHS Western Isles",
-HBT == "S08000029" ~ "NHS Fife",
-HBT == "S08000030" ~ "NHS Tayside",
-HBT == "S08000031" ~ "NHS Greater Glasgow and Clyde",
-HBT == "S08000032" ~ "NHS Lanarkshire",
+HBT == "S08000015" ~ "Ayrshire and Arran",
+HBT == "S08000016" ~ "Borders",
+HBT == "S08000017" ~ "Dumfries and Galloway",
+HBT == "S08000018" ~ "Fife",
+HBT == "S08000019" ~ "Forth Valley",
+HBT == "S08000020" ~ "Grampian",
+HBT == "S08000021" ~ "Greater Glasgow and Clyde",
+HBT == "S08000022" ~ "Highland",
+HBT == "S08000023" ~ "Lanarkshire",
+HBT == "S08000024" ~ "Lothian",
+HBT == "S08000025" ~ "Orkney",
+HBT == "S08000026" ~ "Shetland",
+HBT == "S08000027" ~ "Tayside",
+HBT == "S08000028" ~ "Western Isles",
+HBT == "S08000029" ~ "Fife",
+HBT == "S08000030" ~ "Tayside",
+HBT == "S08000031" ~ "Greater Glasgow and Clyde",
+HBT == "S08000032" ~ "Lanarkshire",
 .default = HBT
 )) %>% select(!HBT)
 
+deprivation_BUT_READABLE <- deprivation %>% mutate(smr_translated = case_when(
+Dataset == "SMR00" ~ "Outpatients",
+Dataset == "SMR01" ~ "General/Acute Inpatients/Day Cases (including Geriatric Long Stay Inpatients)",
+Dataset == "SMR02" ~ "Maternity Inpatients/Day Cases",
+Dataset == "SMR03" ~ "Scottish Index of Deprivation",
+Dataset == "SMR04" ~ "Mental Health Inpatients/Day Cases",
+.default = Dataset
+)) %>% select(!Dataset)
+
 deprivation_BUT_READABLE <- deprivation_BUT_READABLE %>% mutate(hbr_translated = case_when(
 HBR == "S92000003" ~ "Scotland",
-HBR == "S08000015" ~ "NHS Ayrshire and Arran",
-HBR == "S08000016" ~ "NHS Borders",
-HBR == "S08000017" ~ "NHS Dumfries and Galloway",
-HBR == "S08000018" ~ "NHS Fife",
-HBR == "S08000019" ~ "NHS Forth Valley",
-HBR == "S08000020" ~ "NHS Grampian",
-HBR == "S08000021" ~ "NHS Greater Glasgow and Clyde",
-HBR == "S08000022" ~ "NHS Highland",
-HBR == "S08000023" ~ "NHS Lanarkshire",
-HBR == "S08000024" ~ "NHS Lothian",
-HBR == "S08000025" ~ "NHS Orkney",
-HBR == "S08000026" ~ "NHS Shetland",
-HBR == "S08000027" ~ "NHS Tayside",
-HBR == "S08000028" ~ "NHS Western Isles",
-HBR == "S08000029" ~ "NHS Fife",
-HBR == "S08000030" ~ "NHS Tayside",
-HBR == "S08000031" ~ "NHS Greater Glasgow and Clyde",
-HBR == "S08000032" ~ "NHS Lanarkshire",
+HBR == "S08000015" ~ "Ayrshire and Arran",
+HBR == "S08000016" ~ "Borders",
+HBR == "S08000017" ~ "Dumfries and Galloway",
+HBR == "S08000018" ~ "Fife",
+HBR == "S08000019" ~ "Forth Valley",
+HBR == "S08000020" ~ "Grampian",
+HBR == "S08000021" ~ "Greater Glasgow and Clyde",
+HBR == "S08000022" ~ "Highland",
+HBR == "S08000023" ~ "Lanarkshire",
+HBR == "S08000024" ~ "Lothian",
+HBR == "S08000025" ~ "Orkney",
+HBR == "S08000026" ~ "Shetland",
+HBR == "S08000027" ~ "Tayside",
+HBR == "S08000028" ~ "Western Isles",
+HBR == "S08000029" ~ "Fife",
+HBR == "S08000030" ~ "Tayside",
+HBR == "S08000031" ~ "Greater Glasgow and Clyde",
+HBR == "S08000032" ~ "Lanarkshire",
 .default = HBR
 )) %>% select(!HBR)
+
+deprivation_BUT_READABLE <- deprivation_BUT_READABLE %>% 
+  select(
+    FinancialYear, hbr_translated, SIMD, smr_translated, DischargeCount, DischargeRates,
+    PatientsCount, PatientsRates,HospitalResidentsCount, HospitalResidentsRates)
 
 age_and_sex_BUT_READABLE <- age_and_sex %>% mutate(hbr_translated = case_when(
 HBR == "S92000003" ~ "Scotland",
-HBR == "S08000015" ~ "NHS Ayrshire and Arran",
-HBR == "S08000016" ~ "NHS Borders",
-HBR == "S08000017" ~ "NHS Dumfries and Galloway",
-HBR == "S08000018" ~ "NHS Fife",
-HBR == "S08000019" ~ "NHS Forth Valley",
-HBR == "S08000020" ~ "NHS Grampian",
-HBR == "S08000021" ~ "NHS Greater Glasgow and Clyde",
-HBR == "S08000022" ~ "NHS Highland",
-HBR == "S08000023" ~ "NHS Lanarkshire",
-HBR == "S08000024" ~ "NHS Lothian",
-HBR == "S08000025" ~ "NHS Orkney",
-HBR == "S08000026" ~ "NHS Shetland",
-HBR == "S08000027" ~ "NHS Tayside",
-HBR == "S08000028" ~ "NHS Western Isles",
-HBR == "S08000029" ~ "NHS Fife",
-HBR == "S08000030" ~ "NHS Tayside",
-HBR == "S08000031" ~ "NHS Greater Glasgow and Clyde",
-HBR == "S08000032" ~ "NHS Lanarkshire",
+HBR == "S08000015" ~ "Ayrshire and Arran",
+HBR == "S08000016" ~ "Borders",
+HBR == "S08000017" ~ "Dumfries and Galloway",
+HBR == "S08000018" ~ "Fife",
+HBR == "S08000019" ~ "Forth Valley",
+HBR == "S08000020" ~ "Grampian",
+HBR == "S08000021" ~ "Greater Glasgow and Clyde",
+HBR == "S08000022" ~ "Highland",
+HBR == "S08000023" ~ "Lanarkshire",
+HBR == "S08000024" ~ "Lothian",
+HBR == "S08000025" ~ "Orkney",
+HBR == "S08000026" ~ "Shetland",
+HBR == "S08000027" ~ "Tayside",
+HBR == "S08000028" ~ "Western Isles",
+HBR == "S08000029" ~ "Fife",
+HBR == "S08000030" ~ "Tayside",
+HBR == "S08000031" ~ "Greater Glasgow and Clyde",
+HBR == "S08000032" ~ "Lanarkshire",
 .default = HBR
 )) %>% select(!HBR)
 
+age_and_sex_BUT_READABLE <- age_and_sex_BUT_READABLE %>% 
+  select(
+    FinancialYear, AgeGroup, Sex, hbr_translated, DischargeCount, DischargeRates, PatientsCount,
+    PatientsRates)
 ```
+
+
+```{r visualisations 1}
+# Initial Visualizations
+# age group
+age_and_sex_BUT_READABLE %>%
+  group_by(FinancialYear, AgeGroup) %>%
+  summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = AgeGroup, y = Sum_DischargeCount, fill = FinancialYear)) +
+  geom_col() +
+  labs(title = "Histogram of Discharge Count by Age Group and Financial Year",
+       x = "AgeGroup",
+       y = "Sum of DischargeCount") +
+  theme_minimal()
+
+
+age_and_sex_BUT_READABLE %>%
+  group_by(FinancialYear, AgeGroup) %>%
+  summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = AgeGroup, y = Sum_DischargeCount, color = FinancialYear)) +
+  geom_jitter(size = 2) +
+  labs(title = "Scatter Plot of Discharge Count by Age Group and Financial Year",
+       x = "AgeGroup",
+       y = "Sum of DischargeCount",
+       color = "FinancialYear") +
+  theme_minimal()
+
+```
+
+
+```{r visualisations 2}
+#sex
+age_and_sex_BUT_READABLE %>%
+  group_by(FinancialYear, Sex) %>%
+  summarise(Sum_PatientsCount = sum(PatientsCount, na.rm = TRUE), .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = Sex, y = Sum_PatientsCount, fill = FinancialYear)) +
+  geom_col() +
+  labs(title = "Histogram of Patients Count by Age Group and Financial Year",
+       x = "Sex",
+       y = "Sum of Patients Count") +
+  theme_minimal()
+
+
+  age_and_sex_BUT_READABLE %>%
+  group_by(FinancialYear, Sex) %>%
+  summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = Sex, y = Sum_DischargeCount, fill = FinancialYear)) +
+  geom_col() +
+  labs(title = "Histogram of Discharge Count by Age Group and Financial Year",
+       x = "Sex",
+       y = "Sum of Discharge Count") +
+  theme_minimal()
+```
+
+```{r visualisations 3}
+#icd_categories
+diagnosis_BUT_READABLE %>%
+  group_by( FinancialYear) %>%
+  summarise(Sum_PatientsCount = sum(PatientsCount, na.rm = TRUE), .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = FinancialYear, y = Sum_PatientsCount)) +
+  geom_point() +
+  labs(title = "Histogram of Patients Count by Category",
+       x = "Financial Year",
+       y = "Sum of Patients Count") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
+
+
+diagnosis_BUT_READABLE %>%
+  group_by( FinancialYear) %>%
+  summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = FinancialYear, y = Sum_DischargeCount)) +
+  geom_point() +
+  labs(title = "Histogram of Discharge Count by Category",
+       x = "Financial Year",
+       y = "Sum of Discharge numbers") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
+```
+
+```{r visualisations 4}
+#icd_categories
+diagnosis_BUT_READABLE %>%
+  group_by( icd_categories) %>%
+  summarise(Sum_PatientsCount = sum(PatientsCount, na.rm = TRUE), .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = icd_categories, y = Sum_PatientsCount)) +
+  geom_col() +
+  labs(title = "Histogram of Patients Count by Category",
+       x = "icd_categories",
+       y = "Sum of Patients Count") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
+
+
+diagnosis_BUT_READABLE %>%
+  group_by( icd_categories) %>%
+  summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = icd_categories, y = Sum_DischargeCount)) +
+  geom_col() +
+  labs(title = "Histogram of Discharge Count by Category",
+       x = "icd categories",
+       y = "Sum of Discharge Count") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
+```
+
+```{r visualisations 5}
+# hbt_translated
+diagnosis_BUT_READABLE %>%
+  group_by( hbt_translated) %>%
+  summarise(Sum_PatientsCount = sum(PatientsCount, na.rm = TRUE), .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = hbt_translated, y = Sum_PatientsCount)) +
+  geom_col() +
+  labs(title = "Histogram of Patients Count by Region",
+       x = "Region",
+       y = "Sum of Patients Count") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
+
+
+diagnosis_BUT_READABLE %>%
+  group_by(hbt_translated) %>%
+  summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = hbt_translated, y = Sum_DischargeCount)) +
+  geom_col() +
+  labs(title = "Histogram of Discharge Count by Region",
+       x = "Region",
+       y = "Sum of Discharge Count") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
+```
+
+
+```{r visualisations 6}
+#deprivation
+ggplot(deprivation_BUT_READABLE, aes(x = as.factor(SIMD), y = PatientsCount)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(title = "Patients Count vs SIMD",
+       x = "SIMD",
+       y = "Patients Count") +
+  theme_minimal() 
+
+ggplot(deprivation_BUT_READABLE, aes(x = SIMD, y = PatientsRates)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "cyan") +  
+  labs(title = "Scatterplot with Linear Regression Line: SIMD vs Patients Rates",
+       x = "SIMD",
+       y = "Patients Rate") +
+  theme_minimal()
+
+
+
+
+
+```
+
