@@ -62,7 +62,8 @@ diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>%
   select(
     FinancialYear, HBT, DischargeCount, DischargeRates, PatientsCount,
     PatientsRates,HospitalResidentsCount, HospitalResidentsRates,
-    icd_categories, smr_translated)
+    icd_categories, smr_translated) %>%
+  mutate(DischargeRates = DischargeRates / 100000, PatientsRates = PatientsRates / 100000)
 
 diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
   mutate(hbt_translated = case_when(
@@ -258,22 +259,40 @@ diagnosis_BUT_READABLE %>%
   
   ggplot(mapping = aes(x = FinancialYear, y = Sum_PatientsCount)) +
   geom_point() +
-  labs(title = "Histogram of Patients Count by Category",
+  labs(title = "Scatter Plot of Total Patients Count by Category",
        x = "Financial Year",
        y = "Sum of Patients Count") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
 
+diagnosis_BUT_READABLE %>%
+  ggplot(mapping = aes(x = FinancialYear, y = PatientsCount)) +
+  geom_point() +
+  labs(title = "Scatter Plot of Patients Count by Category",
+       x = "Financial Year",
+       y = "Patients Count") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
+
 
 diagnosis_BUT_READABLE %>%
-  group_by( FinancialYear) %>%
+  group_by(FinancialYear) %>%
   summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), .groups = "keep") %>%
   
   ggplot(mapping = aes(x = FinancialYear, y = Sum_DischargeCount)) +
   geom_point() +
-  labs(title = "Histogram of Discharge Count by Category",
+  labs(title = "Scatter Plot of Total Discharge Count by Category",
        x = "Financial Year",
        y = "Sum of Discharge numbers") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
+
+diagnosis_BUT_READABLE %>%
+  ggplot(mapping = aes(x = FinancialYear, y = DischargeCount)) +
+  geom_point() +
+  labs(title = "Scatter Plot of Discharge Count by Category",
+       x = "Financial Year",
+       y = "Discharge numbers") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
 ```
@@ -378,12 +397,92 @@ ggplot(deprivation_simd_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
 
 Looking at the graph for the residuals seem to have a slight positive skew, but it is still fairly randomly distributed around 0 so it is good enough.
 
+```{r fixing Financial Year} 
+diagnosis_pre_2011 <- diagnosis_BUT_READABLE %>%
+  mutate(FinancialYear = strtoi (substring(FinancialYear, 1,4))) %>%
+  filter(FinancialYear < 2011, FinancialYear < 2020) #this is exclusive
+
+diagnosis_post_2011 <- diagnosis_BUT_READABLE %>%
+  mutate(FinancialYear = strtoi (substring(FinancialYear, 1,4))) %>%
+  filter(FinancialYear >= 2011 , FinancialYear < 2020) # this is inclusive
+```
+i am excluding 2020 and 2021, big drop largely due to covid
+
 ``` {r making-a-linear-model 2}
 
-
-
-diagnosis_lin_model <- linear_reg() %>% 
+diagnosis_pre_2011_lin_model <- linear_reg() %>% 
   set_engine("lm") %>% 
-  fit(PatientsRates ~ SIMD, data = deprivation_BUT_READABLE)
+  fit(PatientsCount ~ FinancialYear, data = diagnosis_pre_2011)
+
+diagnosis_pre_2011_lin_model
+
+diagnosis_post_2011_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(PatientsCount ~ FinancialYear, data = diagnosis_post_2011)
+
+diagnosis_post_2011_lin_model
+
+diagnosis_pre_2011_lin_model_aug <- augment(diagnosis_pre_2011_lin_model$fit)
+
+ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(title = "Residuals of Predicted Total Pateints Rates pre 2011 exclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+
+diagnosis_post_2011_lin_model_aug <- augment(diagnosis_post_2011_lin_model$fit)
+
+ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(title = "Residuals of Predicted Total Pateints Rates post 2011 inclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+
+glance(diagnosis_pre_2011_lin_model)$r.squared
+glance(diagnosis_post_2011_lin_model)$r.squared
+
+```
+Imma do it again but with the cumalative data again look at that r square lol
+
+```{r cumalative-data} 
+diagnosis_pre_2011_cum <- diagnosis_pre_2011 %>% group_by(FinancialYear) %>% summarise(TotalPatientsCount = sum(PatientsCount, na.rm = TRUE))
+
+diagnosis_post_2011_cum <- diagnosis_post_2011 %>% group_by(FinancialYear) %>% summarise(TotalPatientsCount = sum(PatientsCount, na.rm = TRUE))
+
+```
+
+``` {r making-a-linear-model 3}
+
+diagnosis_pre_2011_cum_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(TotalPatientsCount ~ FinancialYear, data = diagnosis_pre_2011_cum)
+
+diagnosis_pre_2011_cum_lin_model
+
+diagnosis_post_2011_cum_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(TotalPatientsCount ~ FinancialYear, data = diagnosis_post_2011_cum)
+
+diagnosis_post_2011_cum_lin_model
+
+diagnosis_pre_2011_cum_lin_model_aug <- augment(diagnosis_post_2011_cum_lin_model$fit)
+
+ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(title = "Residuals of Predicted Total Pateints Rates pre 2011 exclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+
+diagnosis_post_2011_cum_lin_model_aug <- augment(diagnosis_post_2011_cum_lin_model$fit)
+
+ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(title = "Residuals of Predicted Total Pateints Rates post 2011 inclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+
+glance(diagnosis_pre_2011_cum_lin_model)$r.squared
+glance(diagnosis_post_2011_cum_lin_model)$r.squared
+
+
+```
+
+``` {r workflow-time}
 
 ```
