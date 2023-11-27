@@ -222,6 +222,7 @@ age_and_sex_BUT_READABLE %>%
 ```
 
 
+
 ```{r visualisations 2}
 #sex
 age_and_sex_BUT_READABLE %>%
@@ -483,6 +484,51 @@ glance(diagnosis_post_2011_cum_lin_model)$r.squared
 
 ```
 
-``` {r workflow-time}
+``` {r workflow-time-pre2010}
+set.seed(1116)
+diagnosis_pre_2011 <- na.omit(diagnosis_pre_2011)
+diagnosis_pre_2011_split <- initial_split(diagnosis_pre_2011, prop = 0.80)
+
+pre_train_data <- training(diagnosis_pre_2011_split)
+pre_test_data <- testing(diagnosis_pre_2011_split)
+
+
+pre_rec <- recipe(PatientsCount ~ FinancialYear, data = pre_train_data) %>%
+  step_dummy(all_nominal(), -all_outcomes())
+
+pre_mod <- linear_reg() %>% 
+  set_engine("lm")
+
+pre_workflow <- workflow() %>%
+  add_model(pre_mod) %>%
+  add_recipe(pre_rec)
+
+pre_fit <- pre_workflow %>%
+  fit(data = pre_train_data)
+
+pre_pred <- predict(pre_fit, pre_test_data) %>% 
+  bind_cols(pre_test_data) 
+pre_pred
 
 ```
+
+``` {r evaluating model}
+rsq(pre_pred, truth = PatientsCount, estimate = .pred)
+rmse(pre_pred, truth = PatientsCount, estimate = .pred)
+```
+
+``` {r gonna do some cross validation}
+folds <- vfold_cv(pre_train_data, v = 5)
+folds
+
+
+set.seed(456)
+pre_fit_rs <- pre_workflow %>%
+  fit_resamples(folds)
+pre_fit_rs
+
+collect_metrics(pre_fit_rs, summarize = FALSE) 
+
+```
+
+after goign through this once, we realise that it doesnt work lol its not very correlatable and it isi bad, it is better to do it through simmply the cumalative one in every way, quick kenny write a pragraph explain it
