@@ -88,7 +88,7 @@ diagnosis_BUT_READABLE <- diagnosis %>%
 - We chose to translate our data sets since technical codes are used thoroughly throughout the data set this made it easier for us and others to read it. This is an example above.
 
 ---
-```{more data}
+```{r more data}
 diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
   mutate(hbt_translated = case_when(
     HBT == "S92000003" ~ "Scotland",
@@ -125,7 +125,7 @@ class: inverse, middle, center
 
 # Initial Visuals 
 
-```{some visuals, echo = FALSE}
+```{r some visuals, echo = FALSE}
 ggplot(mapping = aes(x = FinancialYear, y = Sum_PatientsCount)) +
   geom_point() +
   labs(title = "Histogram of Patients Count by Category",
