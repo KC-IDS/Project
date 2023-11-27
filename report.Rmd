@@ -51,6 +51,7 @@ Include a citation for your data.
 See http://libraryguides.vu.edu.au/c.php?g=386501&p=4347840 for guidance on proper citation for datasets. 
 If you got your data off the web, make sure to state the retrieval date.
 
+Our data set is about mental heath data in Scotland. It covers the period from 1977 to 2022. It provides helpful data for our study such as SIMD(Scottish Index of Multiple Deprivation), financial year, patient count. 
 
 NHS Scotland 
 2018
