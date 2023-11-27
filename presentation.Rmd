@@ -1,6 +1,6 @@
 ---
 title: "Change in Patient Count Over Time with Respect to Different Regions and SIMD"
-subtitle: "Presentation subtitle (if any)"
+subtitle: ""
 author: "the RegRession Rebels <br> Kenny Chen, Matthew Brown, Jake Leung, Aleksandra Iwaszkiewicz, Sarah De Giuli"
 institute: "University of Edinburgh"
 date: "`r Sys.Date()`"
@@ -31,6 +31,7 @@ library(tidymodels)
 library(palmerpenguins)
 library(knitr)
 library(xaringanthemer)
+library(readxl)
 ```
 
 ```{r setup, include=FALSE}
@@ -50,7 +51,7 @@ icd_10_codes <- read_xlsx("data/icd10-lookup.xlsx")
 
 ```{r include=FALSE}
 
-#Background image
+#Background image 
 style_xaringan(
   title_slide_background_image = "img/confetti.jpg"
 )
@@ -58,17 +59,18 @@ style_xaringan(
 
 class: center, middle
 
-## A statement of the overall goal / research question
+## To see if there is a correlation between how patient/discharge count has changed over time and your SIMD score
+
 
 ---
 
 class: inverse, center, middle
 
-# Section title
+# Cleaning Datasets
 
 ---
 
-# Hello World
+# 
 
 - Click the `Knit` button to compile your presentation
 
