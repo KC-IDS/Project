@@ -125,22 +125,22 @@ class: inverse, middle, center
 
 # Initial Visuals 
 
-```{some visuals, echo = FALSE}
-ggplot(mapping = aes(x = FinancialYear, y = Sum_PatientsCount)) +
-  geom_point() +
+```{load visuals, echo = FALSE}
+diagnosis_BUT_READABLE %>%
+  group_by( icd_categories) %>%
+  summarise(Sum_PatientsCount = sum(PatientsCount, na.rm = TRUE), .groups = "keep")
+  
+```
+
+```{visuals, echo = FALSE}
+  ggplot(mapping = aes(x = icd_categories, y = Sum_PatientsCount)) +
+  geom_col() +
   labs(title = "Histogram of Patients Count by Category",
-       x = "Financial Year",
+       x = "icd_categories",
        y = "Sum of Patients Count") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
-
-  ggplot(mapping = aes(x = FinancialYear, y = Sum_DischargeCount)) +
-  geom_point() +
-  labs(title = "Histogram of Discharge Count by Category",
-       x = "Financial Year",
-       y = "Sum of Discharge numbers") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 6)) +
+  theme_minimal()
 ```
 ---
 # Layouts
