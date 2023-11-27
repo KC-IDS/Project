@@ -1,7 +1,7 @@
 ---
-title: "Presentation title"
-subtitle: "Presentation subtitle (if any)"
-author: "Team name <br> Names of team members"
+title: "Change in Patient Count Over Time with Respect to Different Regions and SIMD"
+subtitle: ""
+author: "the RegRession Rebels <br> Kenny Chen, Matthew Brown, Jake Leung, Aleksandra Iwaszkiewicz, Sarah De Giuli"
 institute: "University of Edinburgh"
 date: "`r Sys.Date()`"
 output:
@@ -31,6 +31,7 @@ library(tidymodels)
 library(palmerpenguins)
 library(knitr)
 library(xaringanthemer)
+library(readxl)
 ```
 
 ```{r setup, include=FALSE}
@@ -39,13 +40,18 @@ knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618,
 ```
 
 ```{r load-data, include=FALSE}
-# Load your data here
+diagnosis <- read_csv("data/mental-health-inpatient-activity-diagnosis-trend.csv", show_col_types = FALSE)
 
+deprivation <- read_csv("data/mental-health-inpatient-activity-deprivation.csv", show_col_types = FALSE)
+
+age_and_sex <- read_csv("data/mental-health-inpatient-activity-age-sex.csv", show_col_types = FALSE)
+
+icd_10_codes <- read_xlsx("data/icd10-lookup.xlsx")
 ```
 
 ```{r include=FALSE}
 
-#Background image
+#Background image 
 style_xaringan(
   title_slide_background_image = "img/confetti.jpg"
 )
@@ -53,31 +59,71 @@ style_xaringan(
 
 class: center, middle
 
-## A statement of the overall goal / research question
+## To see if there is a correlation between how patient/discharge count has changed over time and your SIMD score
+
 
 ---
 
 class: inverse, center, middle
 
-# Section title
+# Cleaning Datasets
 
 ---
 
-# Hello World
+# Cleaning Datasets 
+```{r cleaning code}
+diagnosis_BUT_READABLE <- diagnosis %>% 
+  mutate(icd_categories = case_when(
+    ICD10Codes == "F00 - F09 or Chapter G and second position F00" ~ "Organic, including symptomatic, mental disorders", 
+    ICD10Codes == "F10 - F19" ~ "Mental & behavioural disorders due to psychoactive substance use", 
+    ICD10Codes == "F20 - F29" ~ "Schizophrenia, schizotypal, & delusional disorders", 
+    ICD10Codes == "F30 - F39" ~ "Mood (affective) disorders", 
+    ICD10Codes == "F40 - F49" ~ "Neurotic, stress-related, & somatoform disorders", 
+    ICD10Codes == "F60 - F69" ~ "Disorders of adult personality & behaviour", 
+    ICD10Codes == "F50 - F59, F70 - F99" ~ "Other selected diagnoses principally affecting children & young people", 
+    ICD10Codes == "Non-F codes" ~ "Unrecognized diagnosis", 
+                       .default = ICD10Codes )) %>% 
+  select(!ICD10Codes)
+```
+- We chose to translate our data sets since technical codes are used thoroughly throughout the data set this made it easier for us and others to read it. This is an example above.
 
-- Click the `Knit` button to compile your presentation
+---
+```{more data}
+diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
+  mutate(hbt_translated = case_when(
+    HBT == "S92000003" ~ "Scotland",
+    HBT == "S08000015" ~ "Ayrshire and Arran",
+    HBT == "S08000016" ~ "Borders",
+    HBT == "S08000017" ~ "Dumfries and Galloway",
+    HBT == "S08000018" ~ "Fife",
+    HBT == "S08000019" ~ "Forth Valley",
+    HBT == "S08000020" ~ "Grampian",
+    HBT == "S08000021" ~ "Greater Glasgow and Clyde",
+    HBT == "S08000022" ~ "Highland",
+    HBT == "S08000023" ~ "Lanarkshire",
+    HBT == "S08000024" ~ "Lothian",
+    HBT == "S08000025" ~ "Orkney",
+    HBT == "S08000026" ~ "Shetland",
+    HBT == "S08000027" ~ "Tayside",
+    HBT == "S08000028" ~ "Western Isles",
+    HBT == "S08000029" ~ "Fife",
+    HBT == "S08000030" ~ "Tayside",
+    HBT == "S08000031" ~ "Greater Glasgow and Clyde",
+    HBT == "S08000032" ~ "Lanarkshire",
+              .default = HBT)) %>% 
+  select(!HBT)
+```
 
-- Make sure to commit and push all resulting files to your GitHub repo
-
+- Another example here
 ---
 
 class: inverse, middle, center
 
-# Using xaringan
+# Initial Visuals
 
 ---
 
-# xaringan
+# Initial Visuals 
 
 - The presentation is created using the `xaringan` package
 

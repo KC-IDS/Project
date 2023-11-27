@@ -1,6 +1,6 @@
 ---
 title: "Project title"
-author: "by Team-Name: User1, User2, User3, User4 & User5"
+author: "the RegRession Rebels <br> Kenny Chen, Matthew Brown, Jake Leung, Aleksandra Iwaszkiewicz, Sarah De Giuli"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -40,9 +40,9 @@ How do discharge numbers in Scotland change over time?
 
 Describe your research question here. Include why this question might be of interest. 
 
+To see if there is a correlation between how patient/discharge count has changed over time and your SIMD score
 
-
-
+This is of interest as it allows us to understand how mental health has changed over time, and potentially make predictions about mental health in the future. We also have the oppertunity to analyse the impact of deprivation on mental heath and show the effects deprivation has on people in Scotland.
 
 ## Data
 
@@ -51,10 +51,13 @@ Include a citation for your data.
 See http://libraryguides.vu.edu.au/c.php?g=386501&p=4347840 for guidance on proper citation for datasets. 
 If you got your data off the web, make sure to state the retrieval date.
 
+Our data set is about mental heath data in Scotland. It covers the period from 1977 to 2022. It provides helpful data for our study such as SIMD(Scottish Index of Multiple Deprivation), financial year, patient count and discharge count. 
 
-
-
-
+NHS Scotland 
+2018
+Mental Health Inpatient Activity
+Electronic Dataset
+https://www.opendata.nhs.scot/dataset/mental-health-inpatient-activity accessed on Friday 20th October 2023
 
 ## Findings
 
@@ -82,4 +85,4 @@ Make sure to hide your code with  `echo = FALSE` unless the point you are trying
 
 List any references here. You should, at a minimum, list your data source.
 
-
+https://www.opendata.nhs.scot/dataset/mental-health-inpatient-activity accessed on Friday 20th October 2023
