@@ -125,7 +125,9 @@ deprivation_BUT_READABLE <- deprivation_BUT_READABLE %>%
 deprivation_BUT_READABLE <- deprivation_BUT_READABLE %>% 
   select(
     FinancialYear, hbr_translated, SIMD, smr_translated, DischargeCount, DischargeRates,
-    PatientsCount, PatientsRates,HospitalResidentsCount, HospitalResidentsRates)
+    PatientsCount, PatientsRates,HospitalResidentsCount, HospitalResidentsRates) %>%
+  mutate(DischargeRates = DischargeRates / 100000, PatientsRates = PatientsRates / 100000)
+
 
 age_and_sex_BUT_READABLE <- age_and_sex %>% mutate(hbr_translated = case_when(
 HBR == "S92000003" ~ "Scotland",
@@ -335,24 +337,53 @@ diagnosis_BUT_READABLE %>%
 
 ```{r visualisations 6}
 #deprivation
-ggplot(deprivation_BUT_READABLE, aes(x = as.factor(SIMD), y = PatientsCount)) +
+deprivation_BUT_READABLE %>%
+  group_by(SIMD) %>%
+  summarise(TotalPatientsCount = sum(PatientsCount)) %>%
+ggplot(aes(x = as.factor(SIMD), y = TotalPatientsCount)) +
   geom_bar(stat = "identity", fill = "blue") +
   labs(title = "Patients Count vs SIMD",
        x = "SIMD",
        y = "Patients Count") +
   theme_minimal() 
 
-ggplot(deprivation_BUT_READABLE, aes(x = SIMD, y = PatientsRates)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "cyan") +  
-  labs(title = "Scatterplot with Linear Regression Line: SIMD vs Patients Rates",
-       x = "SIMD",
-       y = "Patients Rate") +
-  theme_minimal()
+deprivation_by_simd <- deprivation_BUT_READABLE %>%
+                      group_by(SIMD) %>%
+                      summarise(TotalPatientsRates = sum(PatientsRates) / (n()))
 
+deprivation_by_simd %>%
+  ggplot(mapping = aes(x = SIMD, y = TotalPatientsRates)) +
+    geom_point() +
+    geom_smooth(method = "lm", se = FALSE, color = "cyan") +  
+    labs(title = "Scatterplot with Linear Regression Line: SIMD vs Patients Rates",
+         x = "SIMD",
+         y = "Patients Rate") +
+    theme_minimal()
 
+```
+``` {r making-a-linear-model}
+deprivation_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(PatientsRates ~ SIMD, data = deprivation_BUT_READABLE)
+tidy(deprivation_lin_model)
 
+deprivation_simd_lin_model_aug <- augment(deprivation_lin_model$fit)
 
+ggplot(deprivation_simd_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(x = "Predicted Total Patients Rates", y = "Residuals")
 
 ```
 
+Looking at the graph for the residuals seem to have a slight positive skew, but it is still fairly randomly distributed around 0 so it is good enough.
+
+``` {r making-a-linear-model 2}
+
+
+
+diagnosis_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(PatientsRates ~ SIMD, data = deprivation_BUT_READABLE)
+
+```
