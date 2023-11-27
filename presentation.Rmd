@@ -39,8 +39,13 @@ knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618,
 ```
 
 ```{r load-data, include=FALSE}
-# Load your data here
+diagnosis <- read_csv("data/mental-health-inpatient-activity-diagnosis-trend.csv", show_col_types = FALSE)
 
+deprivation <- read_csv("data/mental-health-inpatient-activity-deprivation.csv", show_col_types = FALSE)
+
+age_and_sex <- read_csv("data/mental-health-inpatient-activity-age-sex.csv", show_col_types = FALSE)
+
+icd_10_codes <- read_xlsx("data/icd10-lookup.xlsx")
 ```
 
 ```{r include=FALSE}
