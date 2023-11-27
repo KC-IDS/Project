@@ -27,6 +27,14 @@ library(tidyverse)
 
 
 ```
+## Introduction 
+Mental Health issues have been gaining a lot of traction in recent years with communities of people on social media putting in the efforts to spread awareness about the prevalence of mental health issues among individuals of the youngest generations. A number of articles have been published commenting on this observable phenomenon and the surge in numbers of people suffering from mental health problems during covid years, some of them being published by government organizations like the NHS, focusing on the situation in the UK more recently, reporting on mental disorder diagnoses in children and young adults. The general public's proliferation in interest regarding the the impact these issues have had on the individuals' daily life, prompt the question of how this trend developed over time, and more importantly, how is it represented in the numbers of patients at institutions that specialize in treating cases of patients that require professional support. As concerning as the issue has been reported to be by these articles, the severity of it can be better judged by the institutions tackling the treatment of these cases and their ability of successfully supporting those in need. Hence, this investigation attempts to look into how successful this has been over the course of the past 25 years. 
+
+https://www.forbes.com/health/mind/mental-health-statistics/#:~:text=Worldwide%3A%20Due%20to%20the%20COVID,is%20about%20a%2025%25%20increase.  
+
+https://www.england.nhs.uk/2023/11/one-in-five-children-and-young-people-had-a-probable-mental-disorder-in-2023/  
+
+
 How do discharge numbers in Scotland change over time?
   - try fitting a suitable model to quantify the change in the numbers and predict how they might          behave in the future
 
@@ -39,7 +47,7 @@ How do discharge numbers in Scotland change over time?
 
 Describe your research question here. Include why this question might be of interest. 
 
-The research question aims to identify whether there exists a correlation between how numbers of patients and numbers of patients discharged have changed over time. Additionally, the investigation analyzes the SIMD score, the index of deprivation, to determine the existence of a correlation and potential impact of the assigned deprivation index of an area on the mental health of its inhabitants, reflected and discerned on the basis of the discharge numbers and patient counts. 
+Answering the research question aims to identify whether there exists a correlation between how numbers of patients and numbers of patients discharged have changed over time. Additionally, the investigation analyzes the SIMD score, the index of deprivation, to determine the existence of a correlation and potential impact of the assigned deprivation index of an area on the mental health of its inhabitants, reflected and discerned on the basis of the discharge numbers and patient counts. 
 
 *insert specific methods of accomplishing the aim, explain the means undertaken to answer the rq* 
 
@@ -51,6 +59,8 @@ Briefly describe your dataset here - include a description of the key variables 
 Include a citation for your data. 
 See http://libraryguides.vu.edu.au/c.php?g=386501&p=4347840 for guidance on proper citation for data sets. 
 If you got your data off the web, make sure to state the retrieval date.
+
+The data used for this investigation is a number of sets on the topic of mental health obtained through the 
 
 Our data set is about mental heath data in Scotland. It covers the period from 1977 to 2022. It provides helpful data for our study such as SIMD(Scottish Index of Multiple Deprivation), financial year, patient count and discharge count. 
 
