@@ -39,9 +39,11 @@ How do discharge numbers in Scotland change over time?
 
 Describe your research question here. Include why this question might be of interest. 
 
-To see if there is a correlation between how patient/discharge count has changed over time and your SIMD score
+The research question aims to identify whether there exists a correlation between how numbers of patients and numbers of patients discharged have changed over time. Additionally, the investigation analyzes the SIMD score, the index of deprivation, to determine the existence of a correlation and potential impact of the assigned deprivation index of an area on the mental health of its inhabitants, reflected and discerned on the basis of the discharge numbers and patient counts. 
 
-This is of interest as it allows us to understand how mental health has changed over time, and potentially make predictions about mental health in the future. We also have the oppertunity to analyse the impact of deprivation on mental heath and show the effects deprivation has on people in Scotland.
+*insert specific methods of accomplishing the aim, explain the means undertaken to answer the rq* 
+
+This topic of investigation is worth exploring due to its potential to understanding how the approach to treating mental health has developed over the years, from 1997 to modern day. This could function as a basis for making predictions about the future numbers of patients in mental health institutions, and therefore, form conclusions about the efficiency and success of treating mental health in Scotland. While this may be of interest to the investigation, it is important to remember that a number of assumptions are being made, which will be stated and explained appropriately throughout the process that is being documented. As insightful as the data used for the investigation is, this is a topic of great importance and extent, so it is worth bearing in mind that this exploration should not be treated as a whole and complete analysis, more so a beginning to the conversation that offers initial conclusions prompting further questions and allowing room to delve into the specifics and intricacies of mental health related data analysis. 
 
 ## Data
 
