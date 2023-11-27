@@ -82,4 +82,4 @@ Make sure to hide your code with  `echo = FALSE` unless the point you are trying
 
 List any references here. You should, at a minimum, list your data source.
 
-
+https://www.opendata.nhs.scot/dataset/mental-health-inpatient-activity accessed on Friday 20th October 2023
