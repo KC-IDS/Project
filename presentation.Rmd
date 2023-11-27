@@ -70,7 +70,7 @@ class: inverse, center, middle
 
 ---
 
-# 
+# Cleaning Datasets 
 
 - Click the `Knit` button to compile your presentation
 
