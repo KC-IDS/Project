@@ -440,9 +440,9 @@ glance(diagnosis_pre_2011_lin_model)$r.squared
 glance(diagnosis_post_2011_lin_model)$r.squared
 
 ```
-Imma do it again but with the cumalative data again look at that r square lol
+Imma do it again but with the cumulative data again look at that r square lol
 
-```{r cumalative-data} 
+```{r cumulative-data} 
 diagnosis_pre_2011_cum <- diagnosis_pre_2011 %>% group_by(FinancialYear) %>% summarise(TotalPatientsCount = sum(PatientsCount, na.rm = TRUE))
 
 diagnosis_post_2011_cum <- diagnosis_post_2011 %>% group_by(FinancialYear) %>% summarise(TotalPatientsCount = sum(PatientsCount, na.rm = TRUE))
