@@ -182,16 +182,19 @@ style_xaringan(
 class: center, middle
 
 ## To see if there is a correlation between how patient/discharge count has changed over time and your SIMD score
-
-
 ---
+class:inverse, center, middle
+#Dataset
+---
+```{r datasets}
+diagnosis <- read_csv("data/mental-health-inpatient-activity-diagnosis-trend.csv", show_col_types = FALSE)
 
+deprivation <- read_csv("data/mental-health-inpatient-activity-deprivation.csv", show_col_types = FALSE)
+```
+---
 class: inverse, center, middle
-
 # Cleaning Datasets
-
 ---
-
 # Cleaning Datasets 
 ```{r cleaning code}
 diagnosis_BUT_READABLE <- diagnosis %>% 
@@ -206,9 +209,9 @@ diagnosis_BUT_READABLE <- diagnosis %>%
     ICD10Codes == "Non-F codes" ~ "Unrecognized diagnosis", 
                        .default = ICD10Codes )) %>% 
   select(!ICD10Codes)
+
 ```
 - We chose to translate our data sets since technical codes are used thoroughly throughout the data set this made it easier for us and others to read it. This is an example above.
-
 ---
 ```{r more data}
 diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
@@ -490,34 +493,6 @@ glance(diagnosis_post_2011_cum_lin_model)$r.squared
 ---
 class: inverse, middle, center
 #Workflow
----
-``` {r workflow-code}
-set.seed(1116)
-diagnosis_pre_2011 <- na.omit(diagnosis_pre_2011)
-diagnosis_pre_2011_split <- initial_split(diagnosis_pre_2011, prop = 0.80)
-
-pre_train_data <- training(diagnosis_pre_2011_split)
-pre_test_data <- testing(diagnosis_pre_2011_split)
-
-
-pre_rec <- recipe(PatientsCount ~ FinancialYear, data = pre_train_data) %>%
-  step_dummy(all_nominal(), -all_outcomes())
-
-pre_mod <- linear_reg() %>% 
-  set_engine("lm")
-
-pre_workflow <- workflow() %>%
-  add_model(pre_mod) %>%
-  add_recipe(pre_rec)
-
-pre_fit <- pre_workflow %>%
-  fit(data = pre_train_data)
-
-pre_pred <- predict(pre_fit, pre_test_data) %>% 
-  bind_cols(pre_test_data) 
-pre_pred
-
-```
 ---
 # Code
 
