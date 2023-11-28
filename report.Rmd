@@ -1,5 +1,5 @@
 ---
-title: "Change in Patient Count Over Time with Respect to Different Regions and SIMD"
+title: "Change in Patient Count Over Time with Respect to Different SIMD"
 author: "the RegRession Rebels <br> Kenny Chen, Matthew Brown, Jake Leung, Aleksandra Iwaszkiewicz, Sarah De Giuli"
 date: "`r Sys.Date()`"
 output: html_document
