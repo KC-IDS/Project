@@ -35,7 +35,7 @@ icd_10_codes <- read_xlsx("data/icd10-lookup.xlsx")
 ```
 
 This chunk is for translating all data/codes into readable categories based on their respective charts.
-```{r load-data}
+```{r clean-data}
 diagnosis_BUT_READABLE <- diagnosis %>% 
   mutate(icd_categories = case_when(
     ICD10Codes == "F00 - F09 or Chapter G and second position F00" ~ "Organic, including symptomatic, mental disorders", 

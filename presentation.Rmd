@@ -445,6 +445,80 @@ glance(diagnosis_post_2011_lin_model)$r.squared
 
 ```
 ---
+#Change to Cumulative Data
+```{r cum}
+diagnosis_pre_2011_cum <- diagnosis_pre_2011 %>% group_by(FinancialYear) %>% summarise(TotalPatientsCount = sum(PatientsCount, na.rm = TRUE))
+
+diagnosis_post_2011_cum <- diagnosis_post_2011 %>% group_by(FinancialYear) %>% summarise(TotalPatientsCount = sum(PatientsCount, na.rm = TRUE))
+```
+---
+```{r linear model 3.1}
+diagnosis_pre_2011_cum_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(TotalPatientsCount ~ FinancialYear, data = diagnosis_pre_2011_cum)
+
+diagnosis_pre_2011_cum_lin_model
+```
+---
+```{r linear model 3.2}
+diagnosis_post_2011_cum_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(TotalPatientsCount ~ FinancialYear, data = diagnosis_post_2011_cum)
+
+diagnosis_post_2011_cum_lin_model
+```
+---
+```{r linear model 3.3, echo=FALSE}
+diagnosis_pre_2011_cum_lin_model_aug <- augment(diagnosis_post_2011_cum_lin_model$fit)
+
+ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(title = "Residuals of Predicted Total Pateints Rates pre 2011 exclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+glance(diagnosis_pre_2011_cum_lin_model)$r.squared
+```
+---
+```{r linear model 3.4, echo=FALSE}
+diagnosis_post_2011_cum_lin_model_aug <- augment(diagnosis_post_2011_cum_lin_model$fit)
+
+ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(title = "Residuals of Predicted Total Pateints Rates post 2011 inclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+glance(diagnosis_post_2011_cum_lin_model)$r.squared
+```
+---
+class: inverse, middle, center
+#Workflow
+---
+``` {r workflow-code}
+set.seed(1116)
+diagnosis_pre_2011 <- na.omit(diagnosis_pre_2011)
+diagnosis_pre_2011_split <- initial_split(diagnosis_pre_2011, prop = 0.80)
+
+pre_train_data <- training(diagnosis_pre_2011_split)
+pre_test_data <- testing(diagnosis_pre_2011_split)
+
+
+pre_rec <- recipe(PatientsCount ~ FinancialYear, data = pre_train_data) %>%
+  step_dummy(all_nominal(), -all_outcomes())
+
+pre_mod <- linear_reg() %>% 
+  set_engine("lm")
+
+pre_workflow <- workflow() %>%
+  add_model(pre_mod) %>%
+  add_recipe(pre_rec)
+
+pre_fit <- pre_workflow %>%
+  fit(data = pre_train_data)
+
+pre_pred <- predict(pre_fit, pre_test_data) %>% 
+  bind_cols(pre_test_data) 
+pre_pred
+
+```
+---
 # Code
 
 ```{r boring-regression}

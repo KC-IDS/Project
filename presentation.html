@@ -216,6 +216,67 @@ diagnosis_post_2011_lin_model
 ## [1] 0.000197397
 ```
 ---
+#Change to Cumulative Data
+
+```r
+diagnosis_pre_2011_cum &lt;- diagnosis_pre_2011 %&gt;% group_by(FinancialYear) %&gt;% summarise(TotalPatientsCount = sum(PatientsCount, na.rm = TRUE))
+
+diagnosis_post_2011_cum &lt;- diagnosis_post_2011 %&gt;% group_by(FinancialYear) %&gt;% summarise(TotalPatientsCount = sum(PatientsCount, na.rm = TRUE))
+```
+---
+
+```r
+diagnosis_pre_2011_cum_lin_model &lt;- linear_reg() %&gt;% 
+  set_engine("lm") %&gt;% 
+  fit(TotalPatientsCount ~ FinancialYear, data = diagnosis_pre_2011_cum)
+
+diagnosis_pre_2011_cum_lin_model
+```
+
+```
+## parsnip model object
+## 
+## 
+## Call:
+## stats::lm(formula = TotalPatientsCount ~ FinancialYear, data = data)
+## 
+## Coefficients:
+##   (Intercept)  FinancialYear  
+##       4326616          -2105
+```
+---
+
+```r
+diagnosis_post_2011_cum_lin_model &lt;- linear_reg() %&gt;% 
+  set_engine("lm") %&gt;% 
+  fit(TotalPatientsCount ~ FinancialYear, data = diagnosis_post_2011_cum)
+
+diagnosis_post_2011_cum_lin_model
+```
+
+```
+## parsnip model object
+## 
+## 
+## Call:
+## stats::lm(formula = TotalPatientsCount ~ FinancialYear, data = data)
+## 
+## Coefficients:
+##   (Intercept)  FinancialYear  
+##      -2750999           1415
+```
+---
+&lt;img src="presentation_files/figure-html/linear model 3.3-1.png" width="80%" /&gt;
+
+```
+## [1] 0.963175
+```
+---
+&lt;img src="presentation_files/figure-html/linear model 3.4-1.png" width="80%" /&gt;
+
+```
+## [1] 0.810157
+```
 # Code
 
 
