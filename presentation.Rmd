@@ -314,9 +314,7 @@ class: inverse, middle, center
 
 ---
 
-# Initial Visuals 
-
-```{r visual1, echo = FALSE}
+```{r visual1, echo=FALSE}
 diagnosis_BUT_READABLE %>%
   group_by( FinancialYear) %>%
   summarise(Sum_PatientsCount = sum(PatientsCount, na.rm = TRUE), .groups = "keep") %>%
@@ -329,9 +327,9 @@ diagnosis_BUT_READABLE %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
 ```
--To find 
+We decided to see if we could find trends in the patient count data to see if correlations could be found between this and SIMD. Here it looks to have a general falling of patients from 1997/98 but starts rising again after 2013/14 and dropping suddenly at 2020/21 due to COVID
 ---
-```{r visual2, echo = FALSE}
+```{r visual2, echo=FALSE}
 diagnosis_BUT_READABLE %>%
   group_by(FinancialYear) %>%
   summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), .groups = "keep") %>%
@@ -344,28 +342,88 @@ diagnosis_BUT_READABLE %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
 ```
-- 
+A similar pattern can be found here with the discharge counts
 ---
-# Layouts
+```{r visual3, echo=FALSE}
+deprivation_BUT_READABLE %>%
+  group_by(SIMD) %>%
+  summarise(TotalPatientsCount = sum(PatientsCount)) %>%
+ggplot(aes(x = as.factor(SIMD), y = TotalPatientsCount)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(title = "Patients Count vs SIMD",
+       x = "SIMD",
+       y = "Patients Count") +
+  theme_minimal() 
+```
 
-You can use plain text
+Mostly a downward trend here with the SIMD attempting to visualize how SIMD may affect patient counts to see if there is a clear correlation. Seemingly no effect.
+---
+```{r visual4, echo=FALSE}
+deprivation_by_simd <- deprivation_BUT_READABLE %>%
+                      group_by(SIMD) %>%
+                      summarise(TotalPatientsRates = sum(PatientsRates) / (n()))
+deprivation_by_simd %>%
+  ggplot(mapping = aes(x = SIMD, y = TotalPatientsRates)) +
+    geom_point() +
+    geom_smooth(method = "lm", se = FALSE, color = "cyan") +  
+    labs(title = "Scatterplot with Linear Regression Line: SIMD vs Patients Rates",
+         x = "SIMD",
+         y = "Patients Rate") +
+    theme_minimal()
+```
 
-- or bullet points
+This visualization shows something similar.
+---
+class: inverse, middle, center
+#Linear Models
+---
+#Linear Model 1
+``` {r linear model1.1}
+deprivation_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(PatientsRates ~ SIMD, data = deprivation_BUT_READABLE)
+tidy(deprivation_lin_model)
+```
+---
+```{r linear model1.2, echo=FALSE}
+deprivation_simd_lin_model_aug <- augment(deprivation_lin_model$fit)
 
-.pull-left[
-or text in two columns $^*$
-]
-.pull-right[
-- like
-- this
-]
-
-.footnote[
-[*] And add footnotes
-]
+ggplot(deprivation_simd_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(x = "Predicted Total Patients Rates", y = "Residuals")
+```
+---
+#Quick fix
+```{r fixing financial year}
+diagnosis_pre_2011 <- diagnosis_BUT_READABLE %>%
+  mutate(FinancialYear = strtoi (substring(FinancialYear, 1,4))) %>%
+  filter(FinancialYear < 2011, FinancialYear < 2020)
+  
+  diagnosis_post_2011 <- diagnosis_BUT_READABLE %>%
+  mutate(FinancialYear = strtoi (substring(FinancialYear, 1,4))) %>%
+  filter(FinancialYear >= 2011 , FinancialYear < 2020)
+```
 
 ---
+#Linear Model 2
+```{r linear model 2.1}
+diagnosis_pre_2011_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(PatientsCount ~ FinancialYear, data = diagnosis_pre_2011)
 
+diagnosis_pre_2011_lin_model
+
+```
+---
+```{r linear model 2.2}
+diagnosis_post_2011_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(PatientsCount ~ FinancialYear, data = diagnosis_post_2011)
+
+diagnosis_post_2011_lin_model
+```
+---
 # Code
 
 ```{r boring-regression}

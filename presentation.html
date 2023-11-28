@@ -4,7 +4,7 @@
     <title>Change in Patient Count Over Time with Respect to Different Regions and SIMD</title>
     <meta charset="utf-8" />
     <meta name="author" content="the RegRession Rebels   Kenny Chen, Matthew Brown, Jake Leung, Aleksandra Iwaszkiewicz, Sarah De Giuli" />
-    <meta name="date" content="2023-11-27" />
+    <meta name="date" content="2023-11-28" />
     <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -22,7 +22,7 @@ class: center, middle, inverse, title-slide
 ### University of Edinburgh
 ]
 .date[
-### 2023-11-27
+### 2023-11-28
 ]
 
 ---
@@ -107,34 +107,103 @@ class: inverse, middle, center
 
 ---
 
-# Initial Visuals 
-
 &lt;img src="presentation_files/figure-html/visual1-1.png" width="80%" /&gt;
--
+We decided to see if we could find trends in the patient count data to see if correlations could be found between this and SIMD. Here it looks to have a general falling of patients from 1997/98 but starts rising again after 2013/14 and dropping suddenly at 2020/21 due to COVID
 ---
 &lt;img src="presentation_files/figure-html/visual2-1.png" width="80%" /&gt;
-- 
+A similar pattern can be found here with the discharge counts
 ---
-# Layouts
+&lt;img src="presentation_files/figure-html/visual3-1.png" width="80%" /&gt;
 
-You can use plain text
-
-- or bullet points
-
-.pull-left[
-or text in two columns `\(^*\)`
-]
-.pull-right[
-- like
-- this
-]
-
-.footnote[
-[*] And add footnotes
-]
-
+Mostly a downward trend here with the SIMD attempting to visualize how SIMD may affect patient counts to see if there is a clear correlation. Seemingly no effect.
 ---
 
+```
+## `geom_smooth()` using formula = 'y ~ x'
+```
+
+&lt;img src="presentation_files/figure-html/visual4-1.png" width="80%" /&gt;
+
+This visualization shows something similar.
+---
+class: inverse, middle, center
+#Linear Models
+---
+#Linear Model 1
+
+```r
+deprivation_lin_model &lt;- linear_reg() %&gt;% 
+  set_engine("lm") %&gt;% 
+  fit(PatientsRates ~ SIMD, data = deprivation_BUT_READABLE)
+tidy(deprivation_lin_model)
+```
+
+```
+## # A tibble: 2 × 5
+##   term         estimate std.error statistic   p.value
+##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)  0.00529  0.0000620      85.3 0        
+## 2 SIMD        -0.000762 0.0000187     -40.7 4.46e-318
+```
+---
+&lt;img src="presentation_files/figure-html/linear model1.2-1.png" width="80%" /&gt;
+---
+#Quick fix
+
+```r
+diagnosis_pre_2011 &lt;- diagnosis_BUT_READABLE %&gt;%
+  mutate(FinancialYear = strtoi (substring(FinancialYear, 1,4))) %&gt;%
+  filter(FinancialYear &lt; 2011, FinancialYear &lt; 2020)
+  
+  diagnosis_post_2011 &lt;- diagnosis_BUT_READABLE %&gt;%
+  mutate(FinancialYear = strtoi (substring(FinancialYear, 1,4))) %&gt;%
+  filter(FinancialYear &gt;= 2011 , FinancialYear &lt; 2020)
+```
+
+---
+#Linear Model 2
+
+```r
+diagnosis_pre_2011_lin_model &lt;- linear_reg() %&gt;% 
+  set_engine("lm") %&gt;% 
+  fit(PatientsCount ~ FinancialYear, data = diagnosis_pre_2011)
+
+diagnosis_pre_2011_lin_model
+```
+
+```
+## parsnip model object
+## 
+## 
+## Call:
+## stats::lm(formula = PatientsCount ~ FinancialYear, data = data)
+## 
+## Coefficients:
+##   (Intercept)  FinancialYear  
+##     13735.290         -6.682
+```
+---
+
+```r
+diagnosis_post_2011_lin_model &lt;- linear_reg() %&gt;% 
+  set_engine("lm") %&gt;% 
+  fit(PatientsCount ~ FinancialYear, data = diagnosis_post_2011)
+
+diagnosis_post_2011_lin_model
+```
+
+```
+## parsnip model object
+## 
+## 
+## Call:
+## stats::lm(formula = PatientsCount ~ FinancialYear, data = data)
+## 
+## Coefficients:
+##   (Intercept)  FinancialYear  
+##     -8733.332          4.492
+```
+---
 # Code
 
 
