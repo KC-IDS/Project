@@ -527,6 +527,5 @@ include_graphics("img/Screenshot 2023-11-29 203238.png")
 ```
 ---
 class: inverse, middle, center
-#Conclusion
----
+#Conclusion 
 
