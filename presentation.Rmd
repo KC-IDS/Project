@@ -1,3 +1,4 @@
+
 ---
 title: "Change in Patient Count Over Time with Respect to Different Regions and SIMD"
 subtitle: ""
@@ -189,13 +190,15 @@ class:inverse, center, middle
 #Dataset
 ---
 ```{r dataset1, echo=FALSE}
-kable(diagnosis, "html") %>%
-  kable_styling(full_width = F)
+kable(diagnosis %>% head(n = 15), "html") %>%
+  kable_styling(full_width = F, position = "float_left") #add , font-size = 2 to change the fontsize of the table
+
+#clean the data, remove unnesecary collums like hbt, ive set it so its only the first 15 rows.
 ```
 ---
 ```{r dataset2, echo=FALSE}
-kable(deprivation, "html") %>%
-  kable_styling(full_width = F)
+kable(deprivation  %>% head(n = 15), "html") %>%
+  kable_styling(full_width = F , position = "float_left")
 ```
 ---
 class: inverse, center, middle
