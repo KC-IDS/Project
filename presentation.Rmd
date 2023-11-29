@@ -502,22 +502,31 @@ glance(diagnosis_post_2011_cum_lin_model)$r.squared
 class: inverse, middle, center
 #Workflow
 ---
-
----
-
-# Images
-
-```{r castle, echo = FALSE, out.width = "55%", fig.align = "center", fig.cap = "Image credit: Photo by Jörg Angeli on Unsplash."}
-include_graphics("img/edinburgh-castle.jpg")
+```{r work1, echo = FALSE, out.width = "100%", fig.align = "center"}
+include_graphics("img/Screenshot 2023-11-28 203722.jpg")
 ```
-
-Or you can also include a full page image. See next slide.
-
 ---
-
-
-class: inverse, center, middle
-background-image: url(img/edinburgh-castle.jpg)
-background-size: contain
-
+```{r work2, echo=FALSE, out.width = "100%", fig.align = "center"}
+include_graphics("img/Screenshot 2023-11-29 203647.png")
+```
+---
+```{r work3, echo=FALSE, out.width = "100%", fig.align = "center"}
+include_graphics("img/Screenshot 2023-11-29 203146.png")
+```
+---
+```{r work4, echo=FALSE, out.width = "100%", fig.align = "center"}
+include_graphics("img/Screenshot 2023-11-29 203213.png")
+```
+---
+```{r work5, echo=FALSE, out.width = "100%", fig.align = "center"}
+include_graphics("img/Screenshot 2023-11-29 203226.png")
+```
+---
+```{r work6, echo=FALSE, out.width = "100%", fig.align = "center"}
+include_graphics("img/Screenshot 2023-11-29 203238.png")
+```
+---
+class: inverse, middle, center
+#Conclusion
+---
 
