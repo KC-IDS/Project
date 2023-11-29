@@ -181,9 +181,7 @@ style_xaringan(
   title_slide_background_image = "img/confetti.jpg"
 )
 ```
-
 class: center, middle
-
 ## To see if there is a correlation between how patient/discharge count has changed over time and your SIMD score
 ---
 class:inverse, center, middle
@@ -191,7 +189,7 @@ class:inverse, center, middle
 ---
 ```{r dataset1, echo=FALSE}
 diagnosis_present <- diagnosis %>%
-  select(-HBTQF, -DatasetQF, -DischargeCountQF, -DischargeRatesQF, -PatientCountQF, -PatientRatesQF, -HospitalResidentsCountQF, -HospitalResidentsRatesQF)
+  select(-HBTQF, -Dataset, -DatasetQF, -DischargeCountQF, -DischargeRatesQF, -PatientCountQF, -PatientRatesQF, -HospitalResidentsCountQF, -HospitalResidentsRatesQF)
 
 kable(diagnosis_present %>% head(n = 15), "html") %>%
   kable_styling(full_width = F, position = "float_left", font_size = 13) #add , font-size = 2 to change the fontsize of the table
@@ -201,7 +199,7 @@ kable(diagnosis_present %>% head(n = 15), "html") %>%
 ---
 ```{r dataset2, echo=FALSE}
 deprivation_present <- deprivation %>%
-  select(-HBRQF, -DatasetQF, -DischargeCountQF, -DischargeRatesQF, -PatientCountQF, -PatientRatesQF, -HospitalResidentsCountQF, -HospitalResidentsRatesQF)
+  select(-HBRQF,-Dataset, -DatasetQF, -DischargeCountQF, -DischargeRatesQF, -PatientCountQF, -PatientRatesQF, -HospitalResidentsCountQF, -HospitalResidentsRatesQF)
 
 kable(deprivation_present %>% head(n = 15), "html") %>%
   kable_styling(full_width = F , position = "float_left", font_size = 13)
@@ -226,7 +224,6 @@ diagnosis_BUT_READABLE <- diagnosis %>%
   select(!ICD10Codes)
 
 ```
-
 ---
 ```{r more data}
 diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
@@ -253,7 +250,6 @@ diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>%
               .default = HBT)) %>% 
   select(!HBT)
 ```
-
 ---
 ``` {r include = FALSE} 
 deprivation_BUT_READABLE <- deprivation %>% 
@@ -326,11 +322,8 @@ age_and_sex_BUT_READABLE <- age_and_sex_BUT_READABLE %>%
     PatientsRates)
 ```
 class: inverse, middle, center
-
 # Initial Visuals
-
 ---
-
 ```{r visual1, echo=FALSE}
 diagnosis_BUT_READABLE %>%
   group_by( FinancialYear) %>%
@@ -344,7 +337,6 @@ diagnosis_BUT_READABLE %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
 ```
-
 ---
 ```{r visual2, echo=FALSE}
 diagnosis_BUT_READABLE %>%
@@ -463,6 +455,7 @@ diagnosis_pre_2011_cum <- diagnosis_pre_2011 %>% group_by(FinancialYear) %>% sum
 diagnosis_post_2011_cum <- diagnosis_post_2011 %>% group_by(FinancialYear) %>% summarise(TotalPatientsCount = sum(PatientsCount, na.rm = TRUE))
 ```
 ---
+#Linear Model 3
 ```{r linear model 3.1}
 diagnosis_pre_2011_cum_lin_model <- linear_reg() %>% 
   set_engine("lm") %>% 
