@@ -189,12 +189,13 @@ class:inverse, center, middle
 #Dataset
 ---
 ```{r dataset1, echo=FALSE}
-kable(head(diagnosis), format = "html") 
-
+kable(diagnosis, "html") %>%
+  kable_styling(full_width = F)
 ```
 ---
 ```{r dataset2, echo=FALSE}
-kable(head(deprivation), format = "html")
+kable(deprivation, "html") %>%
+  kable_styling(full_width = F)
 ```
 ---
 class: inverse, center, middle
@@ -393,7 +394,7 @@ deprivation_lin_model <- linear_reg() %>%
 tidy(deprivation_lin_model)
 ```
 ---
-```{r linear model1.2, echo=FALSE}
+```{r linearmodel1.2, echo=FALSE}
 deprivation_simd_lin_model_aug <- augment(deprivation_lin_model$fit)
 
 ggplot(deprivation_simd_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
