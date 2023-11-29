@@ -32,6 +32,8 @@ library(palmerpenguins)
 library(knitr)
 library(xaringanthemer)
 library(readxl)
+library(flextable)
+library(kableExtra)
 ```
 
 ```{r setup, include=FALSE}
@@ -186,10 +188,13 @@ class: center, middle
 class:inverse, center, middle
 #Dataset
 ---
-```{r datasets}
-diagnosis <- read_csv("data/mental-health-inpatient-activity-diagnosis-trend.csv", show_col_types = FALSE)
+```{r dataset1, echo=FALSE}
+kable(head(diagnosis), format = "html") 
 
-deprivation <- read_csv("data/mental-health-inpatient-activity-deprivation.csv", show_col_types = FALSE)
+```
+---
+```{r dataset2, echo=FALSE}
+kable(head(deprivation), format = "html")
 ```
 ---
 class: inverse, center, middle
@@ -493,6 +498,8 @@ glance(diagnosis_post_2011_cum_lin_model)$r.squared
 ---
 class: inverse, middle, center
 #Workflow
+---
+
 ---
 # Code
 

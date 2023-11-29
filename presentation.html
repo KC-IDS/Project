@@ -4,7 +4,7 @@
     <title>Change in Patient Count Over Time with Respect to Different Regions and SIMD</title>
     <meta charset="utf-8" />
     <meta name="author" content="the RegRession Rebels   Kenny Chen, Matthew Brown, Jake Leung, Aleksandra Iwaszkiewicz, Sarah De Giuli" />
-    <meta name="date" content="2023-11-28" />
+    <meta name="date" content="2023-11-29" />
     <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -22,7 +22,7 @@ class: center, middle, inverse, title-slide
 ### University of Edinburgh
 ]
 .date[
-### 2023-11-28
+### 2023-11-29
 ]
 
 ---
@@ -42,26 +42,307 @@ class: center, middle, inverse, title-slide
 class: center, middle
 
 ## To see if there is a correlation between how patient/discharge count has changed over time and your SIMD score
-
-
 ---
 class:inverse, center, middle
 #Dataset
 ---
-
-```r
-diagnosis &lt;- read_csv("data/mental-health-inpatient-activity-diagnosis-trend.csv", show_col_types = FALSE)
-
-deprivation &lt;- read_csv("data/mental-health-inpatient-activity-deprivation.csv", show_col_types = FALSE)
-```
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; FinancialYear &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; HBT &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; HBTQF &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Dataset &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; DatasetQF &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; ICD10Codes &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DischargeCount &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; DischargeCountQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DischargeRates &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; DischargeRatesQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; PatientsCount &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; PatientCountQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; PatientsRates &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; PatientRatesQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; HospitalResidentsCount &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; HospitalResidentsCountQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; HospitalResidentsRates &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; HospitalResidentsRatesQF &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1997/98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; F60 - F69 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1230 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24.20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 850 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.72 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 140 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.75 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1997/98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SMR01 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; F60 - F69 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; : &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; : &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1997/98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SMR04 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; F60 - F69 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1170 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23.02 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 810 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.93 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 140 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.75 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1997/98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; F10 - F19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11010 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 216.59 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8230 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 161.90 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 490 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.64 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1997/98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SMR01 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; F10 - F19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5330 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 104.85 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4350 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 85.57 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; : &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; : &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1997/98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SMR04 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; F10 - F19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5680 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 111.74 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4300 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 84.59 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 490 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.64 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 ---
-
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; FinancialYear &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; HBR &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; HBRQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; SIMD &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Dataset &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; DatasetQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DischargeCount &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; DischargeCountQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DischargeRates &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; DischargeRatesQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; PatientsCount &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; PatientCountQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; PatientsRates &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; PatientRatesQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; HospitalResidentsCount &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; HospitalResidentsCountQF &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; HospitalResidentsRates &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; HospitalResidentsRatesQF &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1997/98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SMR04 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10470 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 981.04 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7020 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 657.78 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2180 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 204.27 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1997/98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SMR04 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7750 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 756.74 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5250 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 512.63 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1660 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 162.09 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1997/98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SMR04 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5730 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 563.41 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3990 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 392.32 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1350 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 132.74 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1997/98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SMR04 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4160 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 419.17 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2920 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 294.23 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1440 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 145.10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1997/98 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SMR04 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3380 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 344.01 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2370 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 241.22 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 900 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 91.60 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1998/99 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S92000003 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SMR04 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10450 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 992.02 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7110 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 674.95 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 189.86 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
 class: inverse, center, middle
-
 # Cleaning Datasets
-
 ---
-
 # Cleaning Datasets 
 
 ```r
@@ -79,7 +360,6 @@ diagnosis_BUT_READABLE &lt;- diagnosis %&gt;%
   select(!ICD10Codes)
 ```
 - We chose to translate our data sets since technical codes are used thoroughly throughout the data set this made it easier for us and others to read it. This is an example above.
-
 ---
 
 ```r
@@ -291,9 +571,7 @@ diagnosis_post_2011_cum_lin_model
 class: inverse, middle, center
 #Workflow
 ---
-class: center, middle
-background-image: url(img/Screenshot 2023-11-28 203722.jpg)
-background-size: contain
+
 ---
 # Code
 
