@@ -12,20 +12,143 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r load-lib, include = FALSE}
 library(tidyverse)
-# Add any other libraries here
-
-
-
+library(readxl)
+library(tidymodels)
 ```
 
 
 ```{r load-data, include=FALSE}
-# load your data here and any pre-processing/cleaning 
-#  that you need for your report.
+diagnosis <- read_csv("data/mental-health-inpatient-activity-diagnosis-trend.csv", show_col_types = FALSE)
+
+deprivation <- read_csv("data/mental-health-inpatient-activity-deprivation.csv", show_col_types = FALSE)
+
+age_and_sex <- read_csv("data/mental-health-inpatient-activity-age-sex.csv", show_col_types = FALSE)
+
+icd_10_codes <- read_xlsx("data/icd10-lookup.xlsx")
+```
+
+```{r clean-data, include=FALSE}
+diagnosis_BUT_READABLE <- diagnosis %>% 
+  mutate(icd_categories = case_when(
+    ICD10Codes == "F00 - F09 or Chapter G and second position F00" ~ "Organic, including symptomatic, mental disorders", 
+    ICD10Codes == "F10 - F19" ~ "Mental & behavioural disorders due to psychoactive substance use", 
+    ICD10Codes == "F20 - F29" ~ "Schizophrenia, schizotypal, & delusional disorders", 
+    ICD10Codes == "F30 - F39" ~ "Mood (affective) disorders", 
+    ICD10Codes == "F40 - F49" ~ "Neurotic, stress-related, & somatoform disorders", 
+    ICD10Codes == "F60 - F69" ~ "Disorders of adult personality & behaviour", 
+    ICD10Codes == "F50 - F59, F70 - F99" ~ "Other selected diagnoses principally affecting children & young people", 
+    ICD10Codes == "Non-F codes" ~ "Unrecognized diagnosis", 
+                       .default = ICD10Codes )) %>% 
+  select(!ICD10Codes)
+
+diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
+  mutate(smr_translated = case_when(
+    Dataset == "SMR00" ~ "Outpatients",
+    Dataset == "SMR01" ~ "General/Acute Inpatients/Day Cases (including Geriatric Long Stay Inpatients)",
+    Dataset == "SMR02" ~ "Maternity Inpatients/Day Cases",
+    Dataset == "SMR04" ~ "Mental Health Inpatients/Day Cases",
+              .default = Dataset )) %>% 
+  select(!Dataset)
+
+diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
+  select(
+    FinancialYear, HBT, DischargeCount, DischargeRates, PatientsCount,
+    PatientsRates,HospitalResidentsCount, HospitalResidentsRates,
+    icd_categories, smr_translated) %>%
+  mutate(DischargeRates = DischargeRates / 100000, PatientsRates = PatientsRates / 100000)
+
+diagnosis_BUT_READABLE <- diagnosis_BUT_READABLE %>% 
+  mutate(hbt_translated = case_when(
+    HBT == "S92000003" ~ "Scotland",
+    HBT == "S08000015" ~ "Ayrshire and Arran",
+    HBT == "S08000016" ~ "Borders",
+    HBT == "S08000017" ~ "Dumfries and Galloway",
+    HBT == "S08000018" ~ "Fife",
+    HBT == "S08000019" ~ "Forth Valley",
+    HBT == "S08000020" ~ "Grampian",
+    HBT == "S08000021" ~ "Greater Glasgow and Clyde",
+    HBT == "S08000022" ~ "Highland",
+    HBT == "S08000023" ~ "Lanarkshire",
+    HBT == "S08000024" ~ "Lothian",
+    HBT == "S08000025" ~ "Orkney",
+    HBT == "S08000026" ~ "Shetland",
+    HBT == "S08000027" ~ "Tayside",
+    HBT == "S08000028" ~ "Western Isles",
+    HBT == "S08000029" ~ "Fife",
+    HBT == "S08000030" ~ "Tayside",
+    HBT == "S08000031" ~ "Greater Glasgow and Clyde",
+    HBT == "S08000032" ~ "Lanarkshire",
+              .default = HBT)) %>% 
+  select(!HBT)
+
+deprivation_BUT_READABLE <- deprivation %>% 
+  mutate(smr_translated = case_when(
+    Dataset == "SMR00" ~ "Outpatients",
+    Dataset == "SMR01" ~ "General/Acute Inpatients/Day Cases (including Geriatric Long Stay Inpatients)",
+    Dataset == "SMR02" ~ "Maternity Inpatients/Day Cases",
+    Dataset == "SMR03" ~ "Scottish Index of Deprivation",
+    Dataset == "SMR04" ~ "Mental Health Inpatients/Day Cases",
+              .default = Dataset )) %>% 
+  select(!Dataset)
+
+deprivation_BUT_READABLE <- deprivation_BUT_READABLE %>% 
+  mutate(hbr_translated = case_when(
+    HBR == "S92000003" ~ "Scotland",
+    HBR == "S08000015" ~ "Ayrshire and Arran",
+    HBR == "S08000016" ~ "Borders",
+    HBR == "S08000017" ~ "Dumfries and Galloway",
+    HBR == "S08000018" ~ "Fife",
+    HBR == "S08000019" ~ "Forth Valley",
+    HBR == "S08000020" ~ "Grampian",
+    HBR == "S08000021" ~ "Greater Glasgow and Clyde",
+    HBR == "S08000022" ~ "Highland",
+    HBR == "S08000023" ~ "Lanarkshire",
+    HBR == "S08000024" ~ "Lothian",
+    HBR == "S08000025" ~ "Orkney",
+    HBR == "S08000026" ~ "Shetland",
+    HBR == "S08000027" ~ "Tayside",
+    HBR == "S08000028" ~ "Western Isles",
+    HBR == "S08000029" ~ "Fife",
+    HBR == "S08000030" ~ "Tayside",
+    HBR == "S08000031" ~ "Greater Glasgow and Clyde",
+    HBR == "S08000032" ~ "Lanarkshire",
+              .default = HBR )) %>% 
+  select(!HBR)
+
+deprivation_BUT_READABLE <- deprivation_BUT_READABLE %>% 
+  select(
+    FinancialYear, hbr_translated, SIMD, smr_translated, DischargeCount, DischargeRates,
+    PatientsCount, PatientsRates,HospitalResidentsCount, HospitalResidentsRates) %>%
+  mutate(DischargeRates = DischargeRates / 100000, PatientsRates = PatientsRates / 100000)
 
 
+age_and_sex_BUT_READABLE <- age_and_sex %>% mutate(hbr_translated = case_when(
+HBR == "S92000003" ~ "Scotland",
+HBR == "S08000015" ~ "Ayrshire and Arran",
+HBR == "S08000016" ~ "Borders",
+HBR == "S08000017" ~ "Dumfries and Galloway",
+HBR == "S08000018" ~ "Fife",
+HBR == "S08000019" ~ "Forth Valley",
+HBR == "S08000020" ~ "Grampian",
+HBR == "S08000021" ~ "Greater Glasgow and Clyde",
+HBR == "S08000022" ~ "Highland",
+HBR == "S08000023" ~ "Lanarkshire",
+HBR == "S08000024" ~ "Lothian",
+HBR == "S08000025" ~ "Orkney",
+HBR == "S08000026" ~ "Shetland",
+HBR == "S08000027" ~ "Tayside",
+HBR == "S08000028" ~ "Western Isles",
+HBR == "S08000029" ~ "Fife",
+HBR == "S08000030" ~ "Tayside",
+HBR == "S08000031" ~ "Greater Glasgow and Clyde",
+HBR == "S08000032" ~ "Lanarkshire",
+.default = HBR
+)) %>% select(!HBR)
 
-
+age_and_sex_BUT_READABLE <- age_and_sex_BUT_READABLE %>% 
+  select(
+    FinancialYear, AgeGroup, Sex, hbr_translated, DischargeCount, DischargeRates, PatientsCount,
+    PatientsRates)
 ```
 
 ## Introduction 
@@ -91,19 +214,54 @@ Make sure to hide your code with  `echo = FALSE` unless the point you are trying
 To begin, scatter plots for total numbers of patients and total numbers of patients discharged over the last 25 years were created. This is depicted below and the primary premise of these plots was to provide an idea about the trends that have occurred since 1997. Specifically when considering the plots as a pair, to observe and understand how the numbers of patients compare to the discharge numbers.
 
 *INSERT THE SCATTER PLOTS FROM THE PRESENTATION*
-
+```{r scatter, echo=FALSE}
+diagnosis_BUT_READABLE %>%
+  group_by(FinancialYear) %>%
+  summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), Sum_PatientsCount = sum(PatientsCount, na.rm = TRUE),
+            .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = Sum_PatientsCount, y = Sum_DischargeCount)) +
+  geom_point() +
+  labs(title = ,
+       x = "Sum of Patients numbers",
+       y = "Sum of Discharge numbers") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
+```
 Looking at the plots somewhat opposite tendencies can be observed. The visualization of the sum of patients depicts an initially steep decline, with the highest number achieved in the financial year of 1998/99. The values plummet quite consistently onward, with the exception of the years 2007/08 and 2008/09 that experience a slight increase. It could be deduced that this is an effect of the 2008 financial crisis. A less noticeable deviation from this trend is the value for the year 2010/11, which intrigued the group because of how it appears to mark the end of the period of drastic decline in patient numbers. The minimum value appears slightly beyond, for the year of 2014/15, and the numbers have been increasing since, excluding most recent years. The years 2020 - 2022 experience an aggressive drop in numbers of patients, undoubtedly connected to the pandemic. While the fall in discharge numbers in recent years is evident in the second plot, it is not quite as severe. Also, it appears that from the year 2010/11, in contrast to the previous graph, the numbers of discharged patients have been consistently increasing. Whereas, in the earlier years they achieved lower values, but also followed a decreasing tendency, not unlike that of the first graph. Here the minimum value is associated with the year 2009/10, with 2010/11 not being much higher. The graphs do share the space where lowest values are present. They also present with similar trends, but the vertical axes assuming different scales is misleading for comparing actual values. Nonetheless, the alikeness can be understood as high patient numbers in a given year correspond to high discharge numbers in that year, with the same being true of low values.
 
 Next, the investigation moves towards the analysis of SIMD, the deprivation index and its connection to patient numbers. Before looking at the provided visualization it is important to note that the index is a value between 1 and 5, with 1 being deprived in terms of income, employment, education, health, access to services, crime and housing. With health being one of the factors contributing to the assigned value of the index to a region, it is a natural step to consider how narrowing this to mental health is reflected. This is presented in the histogram below.
-
-*INSERT THE HISTOGRAM FROM THE PRESENTATION*
-
+```{r histogram, echo=FALSE}
+deprivation_BUT_READABLE %>%
+  group_by(SIMD) %>%
+  summarise(TotalPatientsCount = sum(PatientsCount)) %>%
+ggplot(aes(x = as.factor(SIMD), y = TotalPatientsCount)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(title = "Patients Count vs SIMD",
+       x = "SIMD",
+       y = "Patients Count") +
+  theme_minimal() 
+```
 Not entirely unsurprisingly, the histogram clearly proves that areas which are considered more deprived and receive a lower value of the index are the ones that the greatest number of patients belong to. The differences between the numbers of patients diminish as the index values progress, but it did surprise the team that the least deprived areas persisted as those with the least number of patients as clearly as the visualization documents.
 
 This is further shown when this information is plotted as a scatter graph with a regression line fitted to the points. The difference being, that it is the SIMD value against patient rates that are being depicted, which is the annual number of patients relative to the size of the population expressed per 100,000 population. 
 
 *INSERT THE PLOT W REGRESSION LINE FROM THE PRESENTATION*
 
+```{r plot regression line, echo=FALSE}
+deprivation_by_simd <- deprivation_BUT_READABLE %>%
+                      group_by(SIMD) %>%
+                      summarise(TotalPatientsRates = sum(PatientsRates) / (n()))
+
+deprivation_by_simd %>%
+  ggplot(mapping = aes(x = SIMD, y = TotalPatientsRates)) +
+    geom_point() +
+    geom_smooth(method = "lm", se = FALSE, color = "cyan") +  
+    labs(title = "Scatterplot with Linear Regression Line: SIMD vs Patients Rates",
+         x = "SIMD",
+         y = "Patients Rate") +
+    theme_minimal()
+```
 As before, the value of patients rate clearly decreases as the SIMD index increases, meaning that a greater number of patients belongs to areas considered deprived. The gradient of the graph which was found to be -0.000762, so moving to an index one higher yields a decrease in the value of patient rates by -0.000762. This appears as a small value, but it is important to remember that patient rates are expressed per 100,000 of population. 
 
 ## Linear Model
@@ -111,6 +269,19 @@ As before, the value of patients rate clearly decreases as the SIMD index increa
 Having got an idea about what the data can inform us of, it was used to move onto creating a linear model for patients rates against SIMD. The choice to continue using the patient rates variable stems from the fact that patient numbers, as was mentioned when discussing the preliminary visualizations, can be misleading and troublesome when comparing to another variable. Fitting a linear model shows the negative gradient of -0.000762 and the intercept of the vertical axis at 0.00529. This was used to plot an augmented linear model to look at the pattern in residuals.
 
 *INSERT THE PLOT W RESIDUALS FROM THE PRESENTATION*
+```{r plot with residual, echo=FALSE}
+deprivation_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(PatientsRates ~ SIMD, data = deprivation_BUT_READABLE)
+tidy(deprivation_lin_model)
+
+deprivation_simd_lin_model_aug <- augment(deprivation_lin_model$fit)
+
+ggplot(deprivation_simd_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(x = "Predicted Total Patients Rates", y = "Residuals")
+```
 
 Looking at this visualization the data appears to be more concentrated above the augmented linear model, meaning it is positively skewed. 
 
