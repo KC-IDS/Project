@@ -393,6 +393,9 @@ deprivation_by_simd %>%
          y = "Patients Rate") +
     theme_minimal()
 
+linear_model <- lm(TotalPatientsRates ~ SIMD, data = deprivation_by_simd)
+slope <- coef(linear_model)[2]
+print(paste("The slope of the regression line is:", round(slope, 7)))
 ```
 ``` {r making-a-linear-model}
 deprivation_lin_model <- linear_reg() %>% 
@@ -406,6 +409,8 @@ ggplot(deprivation_simd_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
   geom_point(alpha = 0.3) +
   geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
   labs(x = "Predicted Total Patients Rates", y = "Residuals")
+
+glance(deprivation_lin_model)$r.squared
 
 ```
 

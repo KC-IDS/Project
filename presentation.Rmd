@@ -330,7 +330,7 @@ diagnosis_BUT_READABLE %>%
   summarise(Sum_PatientsCount = sum(PatientsCount, na.rm = TRUE), .groups = "keep") %>%
   
   ggplot(mapping = aes(x = FinancialYear, y = Sum_PatientsCount)) +
-  geom_point() +
+  geom_point(color = "blue") +
   labs(title = "Scatter Plot of Total Patients Count Over Time",
        x = "Financial Year",
        y = "Sum of Patients Count") +
@@ -344,7 +344,7 @@ diagnosis_BUT_READABLE %>%
   summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), .groups = "keep") %>%
   
   ggplot(mapping = aes(x = FinancialYear, y = Sum_DischargeCount)) +
-  geom_point() +
+  geom_point(color = "blue") +
   labs(title = "Scatter Plot of Total Discharge Count Over Time",
        x = "Financial Year",
        y = "Sum of Discharge numbers") +
@@ -371,11 +371,15 @@ deprivation_by_simd <- deprivation_BUT_READABLE %>%
 deprivation_by_simd %>%
   ggplot(mapping = aes(x = SIMD, y = TotalPatientsRates)) +
     geom_point() +
-    geom_smooth(method = "lm", se = FALSE, color = "cyan") +  
+    geom_smooth(method = "lm", se = FALSE, color = "blue") +  
     labs(title = "Scatterplot with Linear Regression Line: SIMD vs Patients Rates",
          x = "SIMD",
          y = "Patients Rate") +
     theme_minimal()
+
+linear_model <- lm(TotalPatientsRates ~ SIMD, data = deprivation_by_simd)
+slope <- coef(linear_model)[2]
+print(paste("The slope of the regression line is:", round(slope, 7)))
 ```
 ---
 class: inverse, middle, center
@@ -387,6 +391,10 @@ deprivation_lin_model <- linear_reg() %>%
   set_engine("lm") %>% 
   fit(PatientsRates ~ SIMD, data = deprivation_BUT_READABLE)
 tidy(deprivation_lin_model)
+``` 
+``` {r linear model1.1 r.squared, echo = FALSE}
+r_squared <- glance(deprivation_lin_model)$r.squared
+print(paste("R-squared:", round(r_squared, 3)))
 ```
 ---
 ```{r linearmodel1.2, echo=FALSE}

@@ -29,11 +29,7 @@ library(tidyverse)
 ```
 
 ## Introduction 
-Mental Health issues have been gaining a lot of traction in recent years with communities of people on social media putting in the efforts to spread awareness about the prevalence of mental health issues among individuals of the youngest generations. A number of articles have been published commenting on this observable phenomenon and the surge in numbers of people suffering from mental health problems during covid years, some of them being published by government organizations like the NHS, focusing on the situation in the UK more recently, reporting on mental disorder diagnoses in children and young adults. The general public's proliferation in interest regarding the the impact these issues have had on the individuals' daily life, prompt the question of how this trend developed over time, and more importantly, how is it represented in the numbers of patients at institutions that specialize in treating cases of patients that require professional support. As concerning as the issue has been reported to be by these articles, the severity of it can be better judged by the institutions tackling the treatment of these cases and their ability of successfully supporting those in need. Hence, this investigation attempts to look into how successful this has been over the course of the past 25 years. 
-
-https://www.forbes.com/health/mind/mental-health-statistics/#:~:text=Worldwide%3A%20Due%20to%20the%20COVID,is%20about%20a%2025%25%20increase.  
-
-https://www.england.nhs.uk/2023/11/one-in-five-children-and-young-people-had-a-probable-mental-disorder-in-2023/  
+Mental Health issues have been gaining a lot of traction in recent years with communities of people on social media putting in the efforts to spread awareness about the prevalence of mental health issues among individuals of the youngest generations. A number of articles have been published commenting on this observable phenomenon and the surge in numbers of people suffering from mental health problems during covid years, some of them being published by government organizations like the NHS, focusing on the situation in the UK more recently, reporting on mental disorder diagnoses in children and young adults. The general public's proliferation in interest regarding the the impact these issues have had on the individuals' daily life, prompt the question of how this trend developed over time, and more importantly, how is it represented in the numbers of patients at institutions that specialize in treating cases of patients that require professional support. As concerning as the issue has been reported to be by these articles, the severity of it can be better judged by the institutions tackling the treatment of these cases and their ability of successfully supporting those in need. Hence, this investigation attempts to look into how successful this has been over the course of the past 25 years.
 
 
 How do discharge numbers in Scotland change over time?
@@ -104,11 +100,28 @@ Next, the investigation moves towards the analysis of SIMD, the deprivation inde
 
 Not entirely unsurprisingly, the histogram clearly proves that areas which are considered more deprived and receive a lower value of the index are the ones that the greatest number of patients belong to. The differences between the numbers of patients diminish as the index values progress, but it did surprise the team that the least deprived areas persisted as those with the least number of patients as clearly as the visualization documents.
 
+This is further shown when this information is plotted as a scatter graph with a regression line fitted to the points. The difference being, that it is the SIMD value against patient rates that are being depicted, which is the annual number of patients relative to the size of the population expressed per 100,000 population. 
 
-https://www.gov.scot/collections/scottish-index-of-multiple-deprivation-2020/
+*INSERT THE PLOT W REGRESSION LINE FROM THE PRESENTATION*
+
+As before, the value of patients rate clearly decreases as the SIMD index increases, meaning that a greater number of patients belongs to areas considered deprived. The gradient of the graph which was found to be -0.000762, so moving to an index one higher yields a decrease in the value of patient rates by -0.000762. This appears as a small value, but it is important to remember that patient rates are expressed per 100,000 of population. 
+
+## Linear Model
+
+Having got an idea about what the data can inform us of, it was used to move onto creating a linear model for patients rates against SIMD. The choice to continue using the patient rates variable stems from the fact that patient numbers, as was mentioned when discussing the preliminary visualizations, can be misleading and troublesome when comparing to another variable. Fitting a linear model shows the negative gradient of -0.000762 and the intercept of the vertical axis at 0.00529. This was used to plot an augmented linear model to look at the pattern in residuals.
+
+*INSERT THE PLOT W RESIDUALS FROM THE PRESENTATION*
+
+Looking at this visualization the data appears to be more concentrated above the augmented linear model, meaning it is positively skewed. 
 
 ## References
 
 List any references here. You should, at a minimum, list your data source.
 
+https://www.forbes.com/health/mind/mental-health-statistics/#:~:text=Worldwide%3A%20Due%20to%20the%20COVID,is%20about%20a%2025%25%20increase.  
+
+https://www.england.nhs.uk/2023/11/one-in-five-children-and-young-people-had-a-probable-mental-disorder-in-2023/
+
 https://www.opendata.nhs.scot/dataset/mental-health-inpatient-activity accessed on Friday 20th October 2023
+
+https://www.gov.scot/collections/scottish-index-of-multiple-deprivation-2020/
