@@ -61,10 +61,9 @@ Include a citation for your data.
 See http://libraryguides.vu.edu.au/c.php?g=386501&p=4347840 for guidance on proper citation for data sets. 
 If you got your data off the web, make sure to state the retrieval date.
 
-The data used for this investigation is a compilation of sets on the topic of mental health obtained through the NHS Scotland website. The NHS thoroughly documents and collects data that is divided according to specific categories. Out of these extensive resources the group has selected the data on inpatient diagnosis trends, age and sex, and deprivation index.
-Each of these covers the period from 1977 to 2022, where the year assigned to the entry in every row is done according to the financial year. This means that the dates are expressed using two calendar years and the 12 month period spans from the 1 of April of the earlier year to the 31 of March of the second. This specifically is not something that is particularly explored, but is worth explaining to bare in mind and avoid confusion. 
+The data used for this investigation is a compilation of sets on the topic of mental health obtained through the NHS Scotland website. The NHS thoroughly documents and collects data that is divided according to specific categories. Out of these extensive resources the group has selected the data on inpatient diagnosis trends, age and sex, and deprivation index.Each of these covers the period from 1977 to 2022, where the year assigned to the entry in every row is done according to the financial year. This means that the dates are expressed using two calendar years and the 12 month period spans from the 1 of April of the earlier year to the 31 of March of the second. This specifically is not something that is particularly explored, but is worth explaining to bare in mind and avoid confusion. 
 
-To begin with the data was appropriately cleaned and organized. This was done primarily by remaining entries for particular variables. Originally, the NHS data sets use specific codes to denote diagnosis (ICD10), health board of residence regions (HBR), and health board of treatment regions (HBT). Additionally, the quantifier variables were removed. This left Financial Year, icd categories, translated hbr, translated hbt, Discharge Count and Rates, Patients Count and Rates, Hospital Residents Count and Rates, Age Group, Sex, and SIMD, which can be understood as a deprivation index. These variables were to be of greatest interest in the attempt to answering the research question, but ultimately not all of them are represented through visualizations.
+To begin with the data was appropriately cleaned and organized. This was done primarily by remaining entries for particular variables. Originally, the NHS data sets use specific codes to denote diagnosis (ICD10), health board of residence regions (HBR), and health board of treatment regions (HBT). Additionally, the quantifier variables were removed. This left Financial Year, icd categories, translated hbr, translated hbt, Discharge Count and Rates, Patients Count and Rates, Hospital Residents Count and Rates, Age Group, Sex, and SIMD, which can be understood as a deprivation index. These variables were to be of greatest interest in the attempt to answering the research question, but ultimately not all of them are represented through visualizations. Ultimately, it was the numbers of patients and numbers of patients discharged, as well as, the respective rates variables for both, and the SIMD that were explored most intensely. 
 
 NHS Scotland 
 2018
@@ -89,6 +88,15 @@ The addin will ignore code chunks and only count the words in prose. If you don'
 
 You can also load your data here and present any analysis results / plots.
 Make sure to hide your code with  `echo = FALSE` unless the point you are trying to make is about the code itself, in which case you should show your code.
+
+
+## Initial Visualizations
+
+To begin, scatter plots for total numbers of patients and total numbers of patients discharged over the last 25 years were created. This is depicted below and the primary premise of these plots was to provide an idea about the trends that have occurred since 1997. Specifically when considering the plots as a pair, to observe and understand how the numbers of patients compare to the discharge numbers.
+
+*INSERT THE SCATTER PLOTS FROM THE PRESENTATION*
+
+Looking at the plots, initially, somewhat opposite tendencies can be observed. The 
 
 
 

@@ -331,7 +331,7 @@ diagnosis_BUT_READABLE %>%
   
   ggplot(mapping = aes(x = FinancialYear, y = Sum_PatientsCount)) +
   geom_point() +
-  labs(title = "Scatter Plot of Total Patients Count by Category",
+  labs(title = "Scatter Plot of Total Patients Count Over Time",
        x = "Financial Year",
        y = "Sum of Patients Count") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
@@ -345,7 +345,7 @@ diagnosis_BUT_READABLE %>%
   
   ggplot(mapping = aes(x = FinancialYear, y = Sum_DischargeCount)) +
   geom_point() +
-  labs(title = "Scatter Plot of Total Discharge Count by Category",
+  labs(title = "Scatter Plot of Total Discharge Count Over Time",
        x = "Financial Year",
        y = "Sum of Discharge numbers") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
@@ -433,7 +433,7 @@ diagnosis_pre_2011_lin_model_aug <- augment(diagnosis_pre_2011_lin_model$fit)
 ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
   geom_point(alpha = 0.3) +
   geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
-  labs(title = "Residuals of Predicted Total Pateints Rates pre 2011 exclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+  labs(title = "Residuals of Predicted Total Patients Rates pre 2011 exclusive", x = "Predicted Total Patients Rates", y = "Residuals")
 glance(diagnosis_pre_2011_lin_model)$r.squared
 ```
 ---
