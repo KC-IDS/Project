@@ -451,7 +451,7 @@ diagnosis_post_2011_lin_model_aug <- augment(diagnosis_post_2011_lin_model$fit)
 ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
   geom_point(alpha = 0.3) +
   geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
-  labs(title = "Residuals of Predicted Total Pateints Rates post 2011 inclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+  labs(title = "Residuals of Predicted Total Patients Rates post 2011 inclusive", x = "Predicted Total Patients Rates", y = "Residuals")
 glance(diagnosis_post_2011_lin_model)$r.squared
 
 ```
@@ -486,7 +486,7 @@ diagnosis_pre_2011_cum_lin_model_aug <- augment(diagnosis_post_2011_cum_lin_mode
 ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
   geom_point(alpha = 0.3) +
   geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
-  labs(title = "Residuals of Predicted Total Pateints Rates pre 2011 exclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+  labs(title = "Residuals of Predicted Total Patients Rates pre 2011 exclusive", x = "Predicted Total Patients Rates", y = "Residuals")
 glance(diagnosis_pre_2011_cum_lin_model)$r.squared
 ```
 ---
@@ -496,7 +496,7 @@ diagnosis_post_2011_cum_lin_model_aug <- augment(diagnosis_post_2011_cum_lin_mod
 ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
   geom_point(alpha = 0.3) +
   geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
-  labs(title = "Residuals of Predicted Total Pateints Rates post 2011 inclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+  labs(title = "Residuals of Predicted Total Patients Rates post 2011 inclusive", x = "Predicted Total Patients Rates", y = "Residuals")
 glance(diagnosis_post_2011_cum_lin_model)$r.squared
 ```
 ---
