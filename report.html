@@ -11,9 +11,9 @@
 
 <meta name="author" content="the RegRession Rebels   Kenny Chen, Matthew Brown, Jake Leung, Aleksandra Iwaszkiewicz, Sarah De Giuli" />
 
-<meta name="date" content="2023-11-27" />
+<meta name="date" content="2023-11-30" />
 
-<title>Change in Patient Count Over Time with Respect to Different Regions and SIMD</title>
+<title>Change in Patient Count Over Time with Respect to Different SIMD</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -351,30 +351,72 @@ display: none;
 
 
 <h1 class="title toc-ignore">Change in Patient Count Over Time with
-Respect to Different Regions and SIMD</h1>
+Respect to Different SIMD</h1>
 <h4 class="author">the RegRession Rebels <br> Kenny Chen, Matthew Brown,
 Jake Leung, Aleksandra Iwaszkiewicz, Sarah De Giuli</h4>
-<h4 class="date">2023-11-27</h4>
+<h4 class="date">2023-11-30</h4>
 
 </div>
 
 
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Mental Health issues have been gaining a lot of traction in recent
+years with communities of people on social media putting in the efforts
+to spread awareness about the prevalence of mental health issues among
+individuals of the youngest generations. A number of articles have been
+published commenting on this observable phenomenon and the surge in
+numbers of people suffering from mental health problems during covid
+years, some of them being published by government organizations like the
+NHS, focusing on the situation in the UK more recently, reporting on
+mental disorder diagnoses in children and young adults. The general
+public’s proliferation in interest regarding the the impact these issues
+have had on the individuals’ daily life, prompt the question of how this
+trend developed over time, and more importantly, how is it represented
+in the numbers of patients at institutions that specialize in treating
+cases of patients that require professional support. As concerning as
+the issue has been reported to be by these articles, the severity of it
+can be better judged by the institutions tackling the treatment of these
+cases and their ability of successfully supporting those in need. Hence,
+this investigation attempts to look into how successful this has been
+over the course of the past 25 years.</p>
+<p><a href="https://www.forbes.com/health/mind/mental-health-statistics/#" class="uri">https://www.forbes.com/health/mind/mental-health-statistics/#</a>:~:text=Worldwide%3A%20Due%20to%20the%20COVID,is%20about%20a%2025%25%20increase.</p>
+<p><a href="https://www.england.nhs.uk/2023/11/one-in-five-children-and-young-people-had-a-probable-mental-disorder-in-2023/" class="uri">https://www.england.nhs.uk/2023/11/one-in-five-children-and-young-people-had-a-probable-mental-disorder-in-2023/</a></p>
 <p>How do discharge numbers in Scotland change over time? - try fitting
 a suitable model to quantify the change in the numbers and predict how
 they might behave in the future</p>
 <p>3 additional means of analysis: - how they compare to patient numbers
 over time - How they are affected by the deprivation index</p>
+</div>
 <div id="research-question" class="section level2">
 <h2>Research Question</h2>
 <p>Describe your research question here. Include why this question might
 be of interest.</p>
-<p>To see if there is a correlation between how patient/discharge count
-has changed over time and your SIMD score</p>
-<p>This is of interest as it allows us to understand how mental health
-has changed over time, and potentially make predictions about mental
-health in the future. We also have the oppertunity to analyse the impact
-of deprivation on mental heath and show the effects deprivation has on
-people in Scotland.</p>
+<p>Answering the research question aims to identify whether there exists
+a correlation between how numbers of patients and numbers of patients
+discharged have changed over time. Additionally, the investigation
+analyzes the SIMD score, the index of deprivation, to determine the
+existence of a correlation and potential impact of the assigned
+deprivation index of an area on the mental health of its inhabitants,
+reflected and discerned on the basis of the discharge numbers and
+patient counts.</p>
+<p><em>insert specific methods of accomplishing the aim, explain the
+means undertaken to answer the rq</em></p>
+<p>This topic of investigation is worth exploring due to its potential
+to understanding how the approach to treating mental health has
+developed over the years, from 1997 to modern day. This could function
+as a basis for making predictions about the future numbers of patients
+in mental health institutions, and therefore, form conclusions about the
+efficiency and success of treating mental health in Scotland. While this
+may be of interest to the investigation, it is important to remember
+that a number of assumptions are being made, which will be stated and
+explained appropriately throughout the process that is being documented.
+As insightful as the data used for the investigation is, this is a topic
+of great importance and extent, so it is worth bearing in mind that this
+exploration should not be treated as a whole and complete analysis, more
+so a beginning to the conversation that offers initial conclusions
+prompting further questions and allowing room to delve into the
+specifics and intricacies of mental health related data analysis.</p>
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
@@ -383,10 +425,28 @@ variables you will be investigating. Include a citation for your data.
 See <a href="http://libraryguides.vu.edu.au/c.php?g=386501&amp;p=4347840" class="uri">http://libraryguides.vu.edu.au/c.php?g=386501&amp;p=4347840</a>
 for guidance on proper citation for data sets. If you got your data off
 the web, make sure to state the retrieval date.</p>
-<p>Our data set is about mental heath data in Scotland. It covers the
-period from 1977 to 2022. It provides helpful data for our study such as
-SIMD(Scottish Index of Multiple Deprivation), financial year, patient
-count and discharge count.</p>
+<p>The data used for this investigation is a compilation of sets on the
+topic of mental health obtained through the NHS Scotland website. The
+NHS thoroughly documents and collects data that is divided according to
+specific categories. Out of these extensive resources the group has
+selected the data on inpatient diagnosis trends, age and sex, and
+deprivation index. Each of these covers the period from 1977 to 2022,
+where the year assigned to the entry in every row is done according to
+the financial year. This means that the dates are expressed using two
+calendar years and the 12 month period spans from the 1 of April of the
+earlier year to the 31 of March of the second. This specifically is not
+something that is particularly explored, but is worth explaining to bare
+in mind and avoid confusion.</p>
+<p>To begin with the data was appropriately cleaned and organized. This
+was done primarily by remaining entries for particular variables.
+Originally, the NHS data sets use specific codes to denote diagnosis
+(ICD10), health board of residence regions (HBR), and health board of
+treatment regions (HBT). Additionally, the quantifier variables were
+removed. This left Financial Year, icd categories, translated hbr,
+translated hbt, Discharge Count and Rates, Patients Count and Rates,
+Hospital Residents Count and Rates, Age Group, Sex, and SIMD, which can
+be understood as a deprivation index. These variables were to be of
+greatest interest in the attempt to answering the research question.</p>
 <p>NHS Scotland 2018 Mental Health Inpatient Activity Electronic Dataset
 <a href="https://www.opendata.nhs.scot/dataset/mental-health-inpatient-activity" class="uri">https://www.opendata.nhs.scot/dataset/mental-health-inpatient-activity</a>
 accessed on Friday 20th October 2023</p>
