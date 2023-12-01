@@ -16,6 +16,22 @@ library(readxl)
 library(tidymodels)
 ```
 
+## Introduction 
+Mental Health issues have been gaining a lot of traction in recent years with communities of people on social media putting in the efforts to spread awareness about the prevalence of mental health issues among individuals of the youngest generations. A number of articles have been published commenting on this observable phenomenon and the surge in numbers of people suffering from mental health problems during covid years, some of them being published by government organizations like the NHS, focusing on the situation in the UK more recently, reporting on mental disorder diagnoses in children and young adults. The general public's proliferation in interest regarding the the impact these issues have had on the individuals' daily life, prompt the question of how this trend developed over time, and more importantly, how is it represented in the numbers of patients at institutions that specialize in treating cases of patients that require professional support. As concerning as the issue has been reported to be by these articles, the severity of it can be better judged by the institutions tackling the treatment of these cases and their ability of successfully supporting those in need. Hence, this investigation attempts to look into how successful this has been over the course of the past 25 years.
+
+
+## Research Question
+
+Answering the research question aims to identify whether there exists a correlation between how numbers of patients and numbers of patients discharged have changed over time. Additionally, the investigation analyzes the SIMD score, the index of deprivation, to determine the existence of a correlation and potential impact of the assigned deprivation index of an area on the mental health of its inhabitants, reflected and discerned on the basis of the discharge numbers and patient counts. 
+
+To answer the question of how the patient and discharge numbers in Scotland changed over time, with an additional focus on their connection to SIMD, the deprivation index multiple visualizations have been employed. A range of visualizations and models have been created, beginning with initial scatter plots and histograms, moving into linear models that wewre altered and verified through a variety of statistical measures.
+
+This topic of investigation is worth exploring due to its potential to understanding how the approach to treating mental health has developed over the years, from 1997 to modern day. This could function as a basis for making predictions about the future numbers of patients in mental health institutions, and therefore, form conclusions about the efficiency and success of treating mental health in Scotland. While this may be of interest to the investigation, it is important to remember that a number of assumptions are being made, which will be stated and explained appropriately throughout the process that is being documented. As insightful as the data used for the investigation is, this is a topic of great importance and extent, so it is worth bearing in mind that this exploration should not be treated as a whole and complete analysis, more so a beginning to the conversation that offers initial conclusions prompting further questions and allowing room to delve into the specifics and intricacies of mental health related data analysis. 
+
+
+## Data
+
+The data used for this investigation is a compilation of sets on the topic of mental health obtained through the NHS Scotland website. The NHS thoroughly documents and collects data that is divided according to specific categories. Out of these extensive resources the group has selected the data on inpatient diagnosis trends, age and sex, and deprivation index.Each of these covers the period from 1977 to 2022, where the year assigned to the entry in every row is done according to the financial year. This means that the dates are expressed using two calendar years and the 12 month period spans from the 1 of April of the earlier year to the 31 of March of the second. This specifically is not something that is particularly explored, but is worth explaining to bare in mind and avoid confusion. 
 
 ```{r load-data, include=FALSE}
 diagnosis <- read_csv("data/mental-health-inpatient-activity-diagnosis-trend.csv", show_col_types = FALSE)
@@ -151,68 +167,43 @@ age_and_sex_BUT_READABLE <- age_and_sex_BUT_READABLE %>%
     PatientsRates)
 ```
 
-## Introduction 
-Mental Health issues have been gaining a lot of traction in recent years with communities of people on social media putting in the efforts to spread awareness about the prevalence of mental health issues among individuals of the youngest generations. A number of articles have been published commenting on this observable phenomenon and the surge in numbers of people suffering from mental health problems during covid years, some of them being published by government organizations like the NHS, focusing on the situation in the UK more recently, reporting on mental disorder diagnoses in children and young adults. The general public's proliferation in interest regarding the the impact these issues have had on the individuals' daily life, prompt the question of how this trend developed over time, and more importantly, how is it represented in the numbers of patients at institutions that specialize in treating cases of patients that require professional support. As concerning as the issue has been reported to be by these articles, the severity of it can be better judged by the institutions tackling the treatment of these cases and their ability of successfully supporting those in need. Hence, this investigation attempts to look into how successful this has been over the course of the past 25 years.
-
-
-How do discharge numbers in Scotland change over time?
-  - try fitting a suitable model to quantify the change in the numbers and predict how they might          behave in the future
-
-3 additional means of analysis:
-- how they compare to patient numbers over time
-- How they are affected by the deprivation index
-
-
-## Research Question
-
-Describe your research question here. Include why this question might be of interest. 
-
-Answering the research question aims to identify whether there exists a correlation between how numbers of patients and numbers of patients discharged have changed over time. Additionally, the investigation analyzes the SIMD score, the index of deprivation, to determine the existence of a correlation and potential impact of the assigned deprivation index of an area on the mental health of its inhabitants, reflected and discerned on the basis of the discharge numbers and patient counts. 
-
-*insert specific methods of accomplishing the aim, explain the means undertaken to answer the rq* 
-
-This topic of investigation is worth exploring due to its potential to understanding how the approach to treating mental health has developed over the years, from 1997 to modern day. This could function as a basis for making predictions about the future numbers of patients in mental health institutions, and therefore, form conclusions about the efficiency and success of treating mental health in Scotland. While this may be of interest to the investigation, it is important to remember that a number of assumptions are being made, which will be stated and explained appropriately throughout the process that is being documented. As insightful as the data used for the investigation is, this is a topic of great importance and extent, so it is worth bearing in mind that this exploration should not be treated as a whole and complete analysis, more so a beginning to the conversation that offers initial conclusions prompting further questions and allowing room to delve into the specifics and intricacies of mental health related data analysis. 
-
-## Data
-
-Briefly describe your dataset here - include a description of the key variables you will be investigating. 
-Include a citation for your data. 
-See http://libraryguides.vu.edu.au/c.php?g=386501&p=4347840 for guidance on proper citation for data sets. 
-If you got your data off the web, make sure to state the retrieval date.
-
-The data used for this investigation is a compilation of sets on the topic of mental health obtained through the NHS Scotland website. The NHS thoroughly documents and collects data that is divided according to specific categories. Out of these extensive resources the group has selected the data on inpatient diagnosis trends, age and sex, and deprivation index.Each of these covers the period from 1977 to 2022, where the year assigned to the entry in every row is done according to the financial year. This means that the dates are expressed using two calendar years and the 12 month period spans from the 1 of April of the earlier year to the 31 of March of the second. This specifically is not something that is particularly explored, but is worth explaining to bare in mind and avoid confusion. 
-
 To begin with the data was appropriately cleaned and organized. This was done primarily by remaining entries for particular variables. Originally, the NHS data sets use specific codes to denote diagnosis (ICD10), health board of residence regions (HBR), and health board of treatment regions (HBT). Additionally, the quantifier variables were removed. This left Financial Year, icd categories, translated hbr, translated hbt, Discharge Count and Rates, Patients Count and Rates, Hospital Residents Count and Rates, Age Group, Sex, and SIMD, which is the Scottish index of multiple deprivation. These variables were to be of greatest interest in the attempt to answering the research question, but ultimately not all of them are represented through visualizations. Ultimately, it was the numbers of patients and numbers of patients discharged, as well as, the respective rates variables for both, and the SIMD that were explored most intensely. 
-
-NHS Scotland 
-2018
-Mental Health Inpatient Activity
-Electronic Dataset
-https://www.opendata.nhs.scot/dataset/mental-health-inpatient-activity accessed on Friday 20th October 2023
 
 
 ## Initial Visualizations
 
 To begin, scatter plots for total numbers of patients and total numbers of patients discharged over the last 25 years were created. This is depicted below and the primary premise of these plots was to provide an idea about the trends that have occurred since 1997. Specifically when considering the plots as a pair, to observe and understand how the numbers of patients compare to the discharge numbers.
 
-*INSERT THE SCATTER PLOTS FROM THE PRESENTATION*
 ```{r scatter, echo=FALSE}
 diagnosis_BUT_READABLE %>%
-  group_by(FinancialYear) %>%
-  summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), Sum_PatientsCount = sum(PatientsCount, na.rm = TRUE),
-            .groups = "keep") %>%
+  group_by( FinancialYear) %>%
+  summarise(Sum_PatientsCount = sum(PatientsCount, na.rm = TRUE), .groups = "keep") %>%
   
-  ggplot(mapping = aes(x = Sum_PatientsCount, y = Sum_DischargeCount)) +
-  geom_point() +
-  labs(title = ,
-       x = "Sum of Patients numbers",
+  ggplot(mapping = aes(x = FinancialYear, y = Sum_PatientsCount)) +
+  geom_point(color = "blue") +
+  labs(title = "Scatter Plot of Total Patients Count Over Time",
+       x = "Financial Year",
+       y = "Sum of Patients Count") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
+
+diagnosis_BUT_READABLE %>%
+  group_by(FinancialYear) %>%
+  summarise(Sum_DischargeCount = sum(DischargeCount, na.rm = TRUE), .groups = "keep") %>%
+  
+  ggplot(mapping = aes(x = FinancialYear, y = Sum_DischargeCount)) +
+  geom_point(color = "blue") +
+  labs(title = "Scatter Plot of Total Discharge Count Over Time",
+       x = "Financial Year",
        y = "Sum of Discharge numbers") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 6))
 ```
+
 Looking at the plots somewhat opposite tendencies can be observed. The visualization of the sum of patients depicts an initially steep decline, with the highest number achieved in the financial year of 1998/99. The values plummet quite consistently onward, with the exception of the years 2007/08 and 2008/09 that experience a slight increase. It could be deduced that this is an effect of the 2008 financial crisis. A less noticeable deviation from this trend is the value for the year 2010/11, which intrigued the group because of how it appears to mark the end of the period of drastic decline in patient numbers. The minimum value appears slightly beyond, for the year of 2014/15, and the numbers have been increasing since, excluding most recent years. The years 2020 - 2022 experience an aggressive drop in numbers of patients, undoubtedly connected to the pandemic. While the fall in discharge numbers in recent years is evident in the second plot, it is not quite as severe. Also, it appears that from the year 2010/11, in contrast to the previous graph, the numbers of discharged patients have been consistently increasing. Whereas, in the earlier years they achieved lower values, but also followed a decreasing tendency, not unlike that of the first graph. Here the minimum value is associated with the year 2009/10, with 2010/11 not being much higher. The graphs do share the space where lowest values are present. They also present with similar trends, but the vertical axes assuming different scales is misleading for comparing actual values. Nonetheless, the alikeness can be understood as high patient numbers in a given year correspond to high discharge numbers in that year, with the same being true of low values.
 
 Next, the investigation moves towards the analysis of SIMD, the deprivation index and its connection to patient numbers. Before looking at the provided visualization it is important to note that the index is a value between 1 and 5, with 1 being deprived in terms of income, employment, education, health, access to services, crime and housing. With health being one of the factors contributing to the assigned value of the index to a region, it is a natural step to consider how narrowing this to mental health is reflected. This is presented in the histogram below.
+
 ```{r histogram, echo=FALSE}
 deprivation_BUT_READABLE %>%
   group_by(SIMD) %>%
@@ -224,11 +215,10 @@ ggplot(aes(x = as.factor(SIMD), y = TotalPatientsCount)) +
        y = "Patients Count") +
   theme_minimal() 
 ```
+
 Not entirely unsurprisingly, the histogram clearly proves that areas which are considered more deprived and receive a lower value of the index are the ones that the greatest number of patients belong to. The differences between the numbers of patients diminish as the index values progress, but it did surprise the team that the least deprived areas persisted as those with the least number of patients as clearly as the visualization documents.
 
 This is further shown when this information is plotted as a scatter graph with a regression line fitted to the points. The difference being, that it is the SIMD value against patient rates that are being depicted, which is the annual number of patients relative to the size of the population expressed per 100,000 population. 
-
-*INSERT THE PLOT W REGRESSION LINE FROM THE PRESENTATION*
 
 ```{r plot regression line, echo=FALSE}
 deprivation_by_simd <- deprivation_BUT_READABLE %>%
@@ -244,13 +234,14 @@ deprivation_by_simd %>%
          y = "Patients Rate") +
     theme_minimal()
 ```
+
 As before, the value of patients rate clearly decreases as the SIMD index increases, meaning that a greater number of patients belongs to areas considered deprived. The gradient of the graph which was found to be -0.000762, so moving to an index one higher yields a decrease in the value of patient rates by -0.000762. This appears as a small value, but it is important to remember that patient rates are expressed per 100,000 of population. 
+
 
 ## Linear Model
 
 Having got an idea about what the data can inform us of, it was used to move onto creating a linear model for patients rates against SIMD. The choice to continue using the patient rates variable stems from the fact that patient numbers, as was mentioned when discussing the preliminary visualizations, can be misleading and troublesome when comparing to another variable. Fitting a linear model shows the negative gradient of -0.000762 and the intercept of the vertical axis at 0.00529. This was used to plot an augmented linear model to look at the pattern in residuals.
 
-*INSERT THE PLOT W RESIDUALS FROM THE PRESENTATION*
 ```{r plot with residual, echo=FALSE}
 deprivation_lin_model <- linear_reg() %>% 
   set_engine("lm") %>% 
@@ -263,20 +254,178 @@ ggplot(deprivation_simd_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
   geom_point(alpha = 0.3) +
   geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
   labs(x = "Predicted Total Patients Rates", y = "Residuals")
+
+r_squared <- glance(deprivation_lin_model)$r.squared
+print(paste("R-squared:", round(r_squared, 3)))
 ```
 
-Looking at this visualization the data appears to be more concentrated above the augmented linear model, meaning it is positively skewed. 
+Looking at this visualization the data appears to be more concentrated above the augmented linear model, meaning it is positively skewed. Showing that patient numbers increase as SIMD decreases, this shows that deprivation has an impact on mental health as there is a linear relationship between them. This is slightly undermined by a value of R squared of equal to 22.7%, meaning that the quantifiable ability of the model to explain the relationship between these variables is quite weak. The model is only able to account for 22.7% of the variability in the number of patients. While The relationship between the deprivation index and number of patients initially appeared clear and strong, this has been challenged when analyzing the model thoroughly.
 
-Our data analysis has shown that patient numbers increase as SIMD decreases, this shows that deprivation has a clear impact on mental health as there is a linear relationship between them. Our research has also shown that from 1997 to 2011 the total number of patients fell consistently. They then remain about the same until 2015. Since then they have started to increase except for a massive sudden drop in 2020. The drop in 2020 is likely an anomaly caused by the covid-19 pandemic and we would predict that patient numbers would continue to increase over the next years unless action is taken to prevent it.
+
+##Further Linear Models
+
+Having looked into the correlation with linear model it was of interest to create models of patient numbers over time with fitting linear regression. To achieve this the data was divided into 2 sets according to the original observations on the patterns of patient numbers over the years. Therefore, the data was split into values prior and post the year 2011. In terms of the financial year notation, the years 2010/11 and 2011/12 were categorized as the post 2011 data, inclusively. Additionally the years 2020-2022 were excluded having been identified to have misleading values due to the influence of the pandemic reducing the number of patients.
+
+```{r fixing financial year}
+diagnosis_pre_2011 <- diagnosis_BUT_READABLE %>%
+  mutate(FinancialYear = strtoi (substring(FinancialYear, 1,4))) %>%
+  filter(FinancialYear < 2011, FinancialYear < 2020)
+  
+  diagnosis_post_2011 <- diagnosis_BUT_READABLE %>%
+  mutate(FinancialYear = strtoi (substring(FinancialYear, 1,4))) %>%
+  filter(FinancialYear >= 2011 , FinancialYear < 2020)
+```
+
+Two linear models were fitted appropriately, and are documented below.
+
+```{r linear model 2.1, echo = FALSE}
+diagnosis_pre_2011_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(PatientsCount ~ FinancialYear, data = diagnosis_pre_2011)
+
+diagnosis_pre_2011_lin_model
+
+diagnosis_pre_2011_lin_model_aug <- augment(diagnosis_pre_2011_lin_model$fit)
+
+ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(title = "Residuals of Predicted Total Patients Rates pre 2011 exclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+glance(diagnosis_pre_2011_lin_model)$r.squared
+```
+
+```{r linear model 2.2, echo = FALSE}
+diagnosis_post_2011_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(PatientsCount ~ FinancialYear, data = diagnosis_post_2011)
+
+diagnosis_post_2011_lin_model
+
+diagnosis_post_2011_lin_model_aug <- augment(diagnosis_post_2011_lin_model$fit)
+
+ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(title = "Residuals of Predicted Total Patients Rates post 2011 inclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+glance(diagnosis_post_2011_lin_model)$r.squared
+```
+
+The pre-2011 plot has a negative gradient value indicative of the fact that from 1997 to 2011 the total number of patients fell consistently. Whereas, the graph for years from, and including, 2011 to 2020 has a positive gradient but of lower value. It can be deduced that the trends are opposite but of varying degree. The patient numbers have fallen in the early years at a rate steeper than at which they have been growing since 2011. The R squared values, however, are extremely low for these models deeming them unfit and having poor ability of explaining the variability in the population numbers. This prompts the introduction of some changes to improve this model.
+
+For this model to be able to explain the variability of the data more accurately, a change was made to analyze cumulative data by looking into the total number of patients. The means of introducing this change are documented below. 
+
+```{r cum}
+diagnosis_pre_2011_cum <- diagnosis_pre_2011 %>% group_by(FinancialYear) %>% summarise(TotalPatientsCount = sum(PatientsCount, na.rm = TRUE))
+
+diagnosis_post_2011_cum <- diagnosis_post_2011 %>% group_by(FinancialYear) %>% summarise(TotalPatientsCount = sum(PatientsCount, na.rm = TRUE))
+```
+
+Having this as the basis, improved models looking into how the patient numbers changed over time could have been made. The divide into 2 separate models, for the periods 1997-2011 and 2011-2020, persist and the visualizations of the residuals plots are presented. 
+
+```{r linear model 3.1, echo = FALSE}
+diagnosis_pre_2011_cum_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(TotalPatientsCount ~ FinancialYear, data = diagnosis_pre_2011_cum)
+
+diagnosis_pre_2011_cum_lin_model
+
+diagnosis_pre_2011_cum_lin_model_aug <- augment(diagnosis_pre_2011_cum_lin_model$fit)
+
+ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(title = "Residuals of Predicted Total Patients Rates pre 2011 exclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+glance(diagnosis_pre_2011_cum_lin_model)$r.squared
+```
+
+```{r linear model 3.2, echo = FALSE}
+diagnosis_post_2011_cum_lin_model <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(TotalPatientsCount ~ FinancialYear, data = diagnosis_post_2011_cum)
+
+diagnosis_post_2011_cum_lin_model_aug <- augment(diagnosis_post_2011_cum_lin_model$fit)
+
+ggplot(diagnosis_pre_2011_lin_model_aug, mapping = aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, color = "gray", lty = "dashed") +
+  labs(title = "Residuals of Predicted Total Patients Rates post 2011 inclusive", x = "Predicted Total Patients Rates", y = "Residuals")
+glance(diagnosis_post_2011_cum_lin_model)$r.squared
+```
+As in the previous versions of the models, the steep decreasing tendency during early years is maintained and documented in the form of a negative gradient at an exact value of -2105, while the recent 10 years present with a positive gradient, but of smaller value of exactly 1415. So, while the numbers have been climbing in recent years, excluding the anomaly of the pandemic years which heavily interfered with the admission of patients despite reportedly contributing to increasing mental health troubles within the population, the incline at which the total numbers of patients are growing is smaller than that at which they were initially decreasing. Even though this result is not unlike the previous, it comes with more reliability and certainty since the models for years pre-2011 and post-2011, now present with values of 96.3% and 81.0% for the respective R squared, when rounded to 3 significant figures. Hence, contrary to previous findings, these models actually account for the majority of the variability in the designated response variable and can be trusted as satisfying results. 
+
+
+##Workflow
+
+To extend the team's efforts at finding suitable models a workflow was created with the data being split into subsets for training and testing purposes. The process of building said workflow is documented in the code below.
+
+``` {r workflow-time-pre2010}
+set.seed(1116)
+diagnosis_pre_2011 <- na.omit(diagnosis_pre_2011)
+diagnosis_pre_2011_split <- initial_split(diagnosis_pre_2011, prop = 0.80)
+
+pre_train_data <- training(diagnosis_pre_2011_split)
+pre_test_data <- testing(diagnosis_pre_2011_split)
+
+
+pre_rec <- recipe(PatientsCount ~ FinancialYear, data = pre_train_data) %>%
+  step_dummy(all_nominal(), -all_outcomes())
+
+pre_mod <- linear_reg() %>% 
+  set_engine("lm")
+
+pre_workflow <- workflow() %>%
+  add_model(pre_mod) %>%
+  add_recipe(pre_rec)
+
+pre_fit <- pre_workflow %>%
+  fit(data = pre_train_data)
+
+pre_pred <- predict(pre_fit, pre_test_data) %>% 
+  bind_cols(pre_test_data) 
+pre_pred
+
+```
+
+The results of the effectiveness of this workflow were to be established through the calculation of R squared and RMSE, root mean square error values. These were found to be 0.000458 and 950 respectively, when rounded to 3 significant figures. Quite the opposite result to what would ideally be desired. The R squared value is extremely small, while the RMSE has a surprisingly high value. This is suggestive of the fact that this model does not perform well, with the predictions not aligning properly with the observed values and producing high values of error. The values for both of these statistical measures are provided with greater accuracy below. 
+
+``` {r evaluating model, echo = FALSE}
+rsq(pre_pred, truth = PatientsCount, estimate = .pred)
+rmse(pre_pred, truth = PatientsCount, estimate = .pred)
+```
+
+Additionally, the method of cross validation across 5 folds was applied. The results are compiled below. There is significant variability and inconsistency within the results obtained in each fold. 
+
+``` {r gonna do some cross validation, echo = FALSE}
+folds <- vfold_cv(pre_train_data, v = 5)
+folds
+
+set.seed(456)
+pre_fit_rs <- pre_workflow %>%
+  fit_resamples(folds)
+pre_fit_rs
+
+collect_metrics(pre_fit_rs, summarize = FALSE) 
+
+```
+
+The results are generally poor across these folds which can be interpreted as the model being too simple to manage the sophistication of the relations of the data, summarized as underfitting. Potentially extending this investigation into more complex model types and deeper analysis of their features would be a brilliant way of progressing the group's skills and furthering the understanding of this topic.
+
+
+##Conclusion
+
+The whole of this investigation has been able to identify the patterns in changes of population numbers. It was identified that the discharge numbers over the years follow similar patterns to the patient numbers, but it was also observed that the variation in scale in the plots could cause those conclusions to be misleading. While insightful, it would be worth extending this investigation by furthering the exploration into the accuracy and extent of that comparison. Next, a correlation between the SIMD deprivation index and number of patients was developed through a histogram and model. This showed a clear connection of decreasing number of patients in areas with more favorable indices of deprivation, areas considered less deprived. While this should not have come as a surprise considering that health is one of the factors influencing the assigned index, it was valuable to look into through appropriate means. However, the low value of R squared makes it slightly difficult to trust the accuracy of this result. With this in mind the group progressed into linear models that went through a number of versions. The first model was quite effective, but had disappointingly low R squared value. Hence, a change was introduced to switch to cumulative data of total patient numbers which yielded a high R squared value indicative of the models' success. Finally, a workflow to utilize cross validation was built and its results pointed against the robustness of the model with its highly variable results within the folds. Ultimately, the aim was satisfied through these various means.  
+
 
 ## References
 
-List any references here. You should, at a minimum, list your data source.
+Duszynski-Goodman, Lizzie. “Mental Health Statistics.” Forbes, March 9, 2023. https://www.forbes.com/health/mind/mental-health-statistics/#:~:text=Worldwide%3A%20Due%20to%20the%20COVID.
 
-https://www.forbes.com/health/mind/mental-health-statistics/#:~:text=Worldwide%3A%20Due%20to%20the%20COVID,is%20about%20a%2025%25%20increase.  
+NHS England. “NHS England» One in Five Children and Young People Had a Probable Mental Disorder in 2023.” www.england.nhs.uk, November 23, 2023. https://www.england.nhs.uk/2023/11/one-in-five-children-and-young-people-had-a-probable-mental-disorder-in-2023/.
 
-https://www.england.nhs.uk/2023/11/one-in-five-children-and-young-people-had-a-probable-mental-disorder-in-2023/
+Public Health Scotland. “Mental Health Inpatient Activity - NHS Scotland Open Data.” Nhs.scot, 2018. https://www.opendata.nhs.scot/dataset/mental-health-inpatient-activity.
 
-https://www.opendata.nhs.scot/dataset/mental-health-inpatient-activity accessed on Friday 20th October 2023
+Public Health Scotland. “Mental Health Inpatient Activity - NHS Scotland Open Data.” Nhs.scot, 2018. https://www.opendata.nhs.scot/dataset/mental-health-inpatient-activity.
 
-https://www.gov.scot/collections/scottish-index-of-multiple-deprivation-2020/
+Public Health Scotland. “Mental Health Inpatient Activity - NHS Scotland Open Data.” Nhs.scot, 2018. https://www.opendata.nhs.scot/dataset/mental-health-inpatient-activity.
+
+Scottish Government. “Scottish Index of Multiple Deprivation 2020.” www.gov.scot, 2020. https://www.gov.scot/collections/scottish-index-of-multiple-deprivation-2020/.
